@@ -1,0 +1,40 @@
+# ───────── macOS ─────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ───────── Xcode: per-user settings ─────────
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# ───────── Xcode: build output ─────────
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# ───────── Swift Package Manager ─────────
+.build/
+.swiftpm/
+Packages/
+# Keep Package.resolved committed (it pins your Firebase version)
+# so do NOT ignore it.
+
+# ───────── Firebase ─────────
+GoogleService-Info.plist
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# ───────── Misc ─────────
+*.log
+*.swp
+*~
+.idea/
+.vscode/

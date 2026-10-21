@@ -4,6 +4,7 @@
 //
 //  Created by COBSCCOMP25.1P-404 on 2026-10-18.
 //
+// This shows the communiy confirmation.
 
 import Foundation
 

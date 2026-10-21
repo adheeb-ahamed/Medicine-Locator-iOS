@@ -19,7 +19,7 @@
 		23B6B9B830839B0300455104 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "Short-Supply-medicine-Locater-iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resource/Info.plist,
+				Info.plist,
 			);
 			target = 2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */;
 		};

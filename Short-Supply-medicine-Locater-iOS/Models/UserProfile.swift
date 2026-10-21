@@ -7,6 +7,9 @@
 
 import Foundation
 
+// User roles and where permissions differ
+// All the normal users are members
+
 enum UserRole: String, Codable {
     case member      // every normal user: can request AND help
     case pharmacy    // verified by a moderator
@@ -21,7 +24,7 @@ enum UserRole: String, Codable {
     }
 }
 
-/// Stored in Firestore at users/{uid}
+/// Stored in Firestore at users
 struct UserProfile: Codable, Identifiable, Equatable {
     let id: String          // same as the Firebase Auth uid
     var role: UserRole

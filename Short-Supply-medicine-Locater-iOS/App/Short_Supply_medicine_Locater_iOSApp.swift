@@ -6,18 +6,22 @@
 //
 
 import SwiftUI
-import FirebaseCore            // NEW
+import FirebaseCore
+import CoreData
 
 @main
-struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR existing struct name
+struct Short_Supply_medicine_Locater_iOSApp: App {
+    let persistenceController = PersistenceController.shared
 
-    init() {                   // NEW
+    init() {
         FirebaseApp.configure()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SetupCheckView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            
         }
     }
 }

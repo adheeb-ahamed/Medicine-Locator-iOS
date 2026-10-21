@@ -11,8 +11,19 @@
 		23B6B9B63083973100455104 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 23B6B9B53083973100455104 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		23B6BA203089785C00455104 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2377CDB030837553006BB701 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2377CDB730837553006BB701;
+			remoteInfo = "Short-Supply-medicine-Locater-iOS";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2377CDB830837553006BB701 /* Short-Supply-medicine-Locater-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Short-Supply-medicine-Locater-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23B6BA1C3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Short-Supply-medicine-Locater-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -34,6 +45,11 @@
 			path = "Short-Supply-medicine-Locater-iOS";
 			sourceTree = "<group>";
 		};
+		23B6BA1D3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Short-Supply-medicine-Locater-iOSTests";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +62,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		23B6BA193089785C00455104 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -53,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				2377CDBA30837553006BB701 /* Short-Supply-medicine-Locater-iOS */,
+				23B6BA1D3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */,
 				2377CDB930837553006BB701 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				2377CDB830837553006BB701 /* Short-Supply-medicine-Locater-iOS.app */,
+				23B6BA1C3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,6 +117,29 @@
 			productReference = 2377CDB830837553006BB701 /* Short-Supply-medicine-Locater-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		23B6BA1B3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23B6BA223089785C00455104 /* Build configuration list for PBXNativeTarget "Short-Supply-medicine-Locater-iOSTests" */;
+			buildPhases = (
+				23B6BA183089785C00455104 /* Sources */,
+				23B6BA193089785C00455104 /* Frameworks */,
+				23B6BA1A3089785C00455104 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				23B6BA213089785C00455104 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				23B6BA1D3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */,
+			);
+			name = "Short-Supply-medicine-Locater-iOSTests";
+			packageProductDependencies = (
+			);
+			productName = "Short-Supply-medicine-Locater-iOSTests";
+			productReference = 23B6BA1C3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -104,6 +152,10 @@
 				TargetAttributes = {
 					2377CDB730837553006BB701 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					23B6BA1B3089785C00455104 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 2377CDB730837553006BB701;
 					};
 				};
 			};
@@ -125,12 +177,20 @@
 			projectRoot = "";
 			targets = (
 				2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */,
+				23B6BA1B3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2377CDB630837553006BB701 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		23B6BA1A3089785C00455104 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -147,7 +207,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		23B6BA183089785C00455104 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		23B6BA213089785C00455104 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */;
+			targetProxy = 23B6BA203089785C00455104 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2377CDC130837555006BB701 /* Debug */ = {
@@ -356,6 +431,51 @@
 			};
 			name = Release;
 		};
+		23B6BA233089785C00455104 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adheeb.Short-Supply-medicine-Locater-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Short-Supply-medicine-Locater-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Short-Supply-medicine-Locater-iOS";
+			};
+			name = Debug;
+		};
+		23B6BA243089785C00455104 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.adheeb.Short-Supply-medicine-Locater-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Short-Supply-medicine-Locater-iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Short-Supply-medicine-Locater-iOS";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -373,6 +493,15 @@
 			buildConfigurations = (
 				2377CDC430837555006BB701 /* Debug */,
 				2377CDC530837555006BB701 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23B6BA223089785C00455104 /* Build configuration list for PBXNativeTarget "Short-Supply-medicine-Locater-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23B6BA233089785C00455104 /* Debug */,
+				23B6BA243089785C00455104 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

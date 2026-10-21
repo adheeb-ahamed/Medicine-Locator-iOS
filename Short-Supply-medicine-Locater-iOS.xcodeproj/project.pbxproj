@@ -19,7 +19,7 @@
 		23B6B9B830839B0300455104 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "Short-Supply-medicine-Locater-iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resource/Info.plist,
 			);
 			target = 2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */;
 		};
@@ -294,7 +294,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adheeb.Short-Supply-medicine-Locater-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ad.MedicineLocator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -340,7 +340,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.adheeb.Short-Supply-medicine-Locater-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ad.MedicineLocator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -385,7 +385,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 13.0.1;
+				minimumVersion = 12.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

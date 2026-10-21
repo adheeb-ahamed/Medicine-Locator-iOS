@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseCore            // NEW
 
 @main
-struct Short_Supply_medicine_Locater_iOSApp: App {
+struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR existing struct name
+
+    init() {                   // NEW
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

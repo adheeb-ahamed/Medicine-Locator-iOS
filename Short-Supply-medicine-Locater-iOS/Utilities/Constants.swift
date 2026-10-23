@@ -13,6 +13,8 @@ enum Constants {
     enum Location {
         /// You must be within this many metres of a pharmacy to vote on-site.
         static let onSiteRadius: Double = 100
+        /// "Pharmacies near you" shows pharmacies within this distance.
+        static let nearbyRadius : Double = 10_000
     }
 
     enum Lifetime {

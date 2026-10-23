@@ -33,4 +33,14 @@ enum TestData {
             neverHereCount: neverHere
         )
     }
+    
+    static func pharmacy(id: String = "p1",
+                         name: String = "Test Pharmacy",
+                         district: String = "Colombo",
+                         latitude: Double = 6.9344,
+                         longitude: Double = 79.8428) -> Pharmacy {
+        Pharmacy(id: id, name: name, address: "Test Road", district: district,
+                 latitude: latitude, longitude: longitude,
+                 phone: nil, kind: .retail, isVerified: false)
+    }
 }

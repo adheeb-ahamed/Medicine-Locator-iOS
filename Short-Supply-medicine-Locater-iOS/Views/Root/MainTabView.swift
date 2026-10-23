@@ -7,19 +7,25 @@
 
 import SwiftUI
 
-/// The main app after unlock. Home is a placeholder until Phase 4.
 struct MainTabView: View {
+    @Environment(ServiceContainer.self) private var services
+
     var body: some View {
         TabView {
             NavigationStack {
-                ContentUnavailableView(
-                    "Home is coming next",
-                    systemImage: "hammer",
-                    description: Text("Search, requests and the map arrive in Phase 4.")
-                )
-                .navigationTitle("Home")
+                HomeView(viewModel: HomeViewModel(
+                    pharmacyService: services.pharmacies,
+                    locationService: services.location
+                ))
             }
             .tabItem { Label("Home", systemImage: "house") }
+
+            NavigationStack {
+                PharmacyMapView(viewModel: MapViewModel(
+                    pharmacyService: services.pharmacies
+                ))
+            }
+            .tabItem { Label("Map", systemImage: "map") }
 
             NavigationStack {
                 AccountView()

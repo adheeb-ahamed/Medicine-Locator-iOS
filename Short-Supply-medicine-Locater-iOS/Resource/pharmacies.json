@@ -1,0 +1,70 @@
+
+
+[
+  {
+    "id": "SAMPLE-001",
+    "name": "Sample Pharmacy Kollupitiya",
+    "address": "Galle Road, Colombo 03",
+    "district": "Colombo",
+    "latitude": 6.9110,
+    "longitude": 79.8500,
+    "phone": null,
+    "kind": "retail",
+    "isVerified": false
+  },
+  {
+    "id": "SAMPLE-002",
+    "name": "Sample Pharmacy Bambalapitiya",
+    "address": "Galle Road, Colombo 04",
+    "district": "Colombo",
+    "latitude": 6.8930,
+    "longitude": 79.8560,
+    "phone": null,
+    "kind": "retail",
+    "isVerified": false
+  },
+  {
+    "id": "SAMPLE-003",
+    "name": "Sample Hospital Pharmacy Borella",
+    "address": "Borella, Colombo 08",
+    "district": "Colombo",
+    "latitude": 6.9180,
+    "longitude": 79.8770,
+    "phone": null,
+    "kind": "hospital",
+    "isVerified": false
+  },
+  {
+    "id": "SAMPLE-004",
+    "name": "Sample Pharmacy Nugegoda",
+    "address": "High Level Road, Nugegoda",
+    "district": "Colombo",
+    "latitude": 6.8720,
+    "longitude": 79.8890,
+    "phone": null,
+    "kind": "retail",
+    "isVerified": false
+  },
+  {
+    "id": "SAMPLE-005",
+    "name": "Sample Pharmacy Dehiwala",
+    "address": "Galle Road, Dehiwala",
+    "district": "Colombo",
+    "latitude": 6.8510,
+    "longitude": 79.8650,
+    "phone": null,
+    "kind": "retail",
+    "isVerified": false
+  },
+  {
+    "id": "SAMPLE-006",
+    "name": "Sample Pharmacy Kandy",
+    "address": "Peradeniya Road, Kandy",
+    "district": "Kandy",
+    "latitude": 7.2906,
+    "longitude": 80.6337,
+    "phone": null,
+    "kind": "retail",
+    "isVerified": false
+  }
+]

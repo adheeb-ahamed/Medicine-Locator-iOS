@@ -11,6 +11,8 @@ import SwiftUI
 struct NewRequestView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: NewRequestViewModel
+    @Environment(ServiceContainer.self) private var services
+    @State private var showingScanner = false
 
     init(viewModel: NewRequestViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -35,6 +37,11 @@ struct NewRequestView: View {
                     .autocorrectionDisabled()
                 TextField("Strength (optional), e.g. 400 mg", text: $viewModel.strength)
                     .autocorrectionDisabled()
+                Button {
+                    showingScanner = true
+                } label: {
+                    Label("Scan the box instead", systemImage: "text.viewfinder")
+                }
             }
 
             if viewModel.isControlled {
@@ -81,6 +88,14 @@ struct NewRequestView: View {
             }
         }
         .navigationTitle("New request")
+        .sheet(isPresented: $showingScanner) {
+            NavigationStack {
+                ScanView(viewModel: services.makeScanViewModel()) { name, strength in
+                    viewModel.medicineName = name
+                    if let strength { viewModel.strength = strength }
+                }
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") { dismiss() }

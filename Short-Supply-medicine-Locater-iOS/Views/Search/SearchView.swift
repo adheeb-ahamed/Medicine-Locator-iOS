@@ -12,6 +12,7 @@ struct SearchView: View {
     @Environment(ServiceContainer.self) private var services
     @State private var viewModel: SearchViewModel
     @State private var showingNewRequest = false
+    @State private var showingScanner = false
 
     init(viewModel: SearchViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -62,6 +63,23 @@ struct SearchView: View {
             }
         }
         .navigationTitle("Find a medicine")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showingScanner = true
+                } label: {
+                    Label("Scan box", systemImage: "text.viewfinder")
+                }
+            }
+        }
+        .sheet(isPresented: $showingScanner) {
+            NavigationStack {
+                ScanView(viewModel: services.makeScanViewModel()) { name, _ in
+                    viewModel.query = name
+                    viewModel.submit()          // searches straight away
+                }
+            }
+        }
         .searchable(text: $viewModel.query,
                     placement: .navigationBarDrawer(displayMode: .always),
                     prompt: "Medicine name")

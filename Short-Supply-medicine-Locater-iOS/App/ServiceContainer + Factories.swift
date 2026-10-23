@@ -62,4 +62,8 @@ extension ServiceContainer {
                             authService: auth,
                             notificationService: notifications)
     }
+    
+    func makeScanViewModel() -> ScanViewModel {
+            ScanViewModel(scanner: scanner)
+    }
 }

@@ -24,7 +24,8 @@ final class ServiceContainer {
     let reputation: ReputationServicing
     let notifications: NotificationServicing      // Phase 7
     let answerWatcher: AnswerWatcher              // Phase 7
-    let arrivals: ArrivalMonitoring               // Phase 7
+    let arrivals: ArrivalMonitoring
+    let scanner : ScannerServicing
 
     init(auth: AuthServicing,
          users: UserServicing,
@@ -37,7 +38,8 @@ final class ServiceContainer {
          reputation: ReputationServicing,
          notifications: NotificationServicing,
          answerWatcher: AnswerWatcher,
-         arrivals: ArrivalMonitoring) {
+         arrivals: ArrivalMonitoring,
+         scanner:ScannerServicing) {
         self.auth = auth
         self.users = users
         self.biometrics = biometrics
@@ -50,6 +52,7 @@ final class ServiceContainer {
         self.notifications = notifications
         self.answerWatcher = answerWatcher
         self.arrivals = arrivals
+        self.scanner = scanner
     }
 
     /// The real services used when the app runs.
@@ -79,7 +82,8 @@ final class ServiceContainer {
                                          authService: auth),
             arrivals: RegionMonitorService(pharmacyService: pharmacies,
                                            locationService: location,
-                                           notificationService: notifications)
+                                           notificationService: notifications),
+            scanner : VisionScannerService()
         )
     }
 

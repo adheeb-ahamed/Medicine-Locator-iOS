@@ -44,7 +44,7 @@ struct AnswerWatcherTests {
         await watcher.checkForNewAnswers()
         #expect(notifications.sent.map(\.id) == ["answer-new"])
 
-        await watcher.checkForNewAnswers()                 // nothing new
+        await watcher.checkForNewAnswers()                 
         #expect(notifications.sent.count == 1)
     }
 

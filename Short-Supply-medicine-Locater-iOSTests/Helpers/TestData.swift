@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 @testable import Short_Supply_medicine_Locater_iOS
 
 /// Fixed test data. A fixed date means tests give the same result every run.
@@ -38,6 +39,15 @@ enum TestData {
             soldOutCount: soldOut,
             neverHereCount: neverHere
         )
+    }
+    
+    /// A 1×1 image — enough to call the scanner in tests.
+    static var blankImage: CGImage {
+        let context = CGContext(data: nil, width: 1, height: 1,
+                                bitsPerComponent: 8, bytesPerRow: 4,
+                                space: CGColorSpaceCreateDeviceRGB(),
+                                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        return context.makeImage()!
     }
 
     static func request(id: String = "request-1",

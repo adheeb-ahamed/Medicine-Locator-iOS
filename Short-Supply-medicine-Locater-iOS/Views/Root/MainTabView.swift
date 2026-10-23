@@ -19,6 +19,11 @@ struct MainTabView: View {
                 ))
             }
             .tabItem { Label("Home", systemImage: "house") }
+            
+            NavigationStack {
+                HelpFeedView(viewModel: services.makeHelpViewModel())
+            }
+            .tabItem { Label("Help", systemImage: "hand.raised") }
 
             NavigationStack {
                 PharmacyMapView(viewModel: MapViewModel(

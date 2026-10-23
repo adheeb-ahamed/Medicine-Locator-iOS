@@ -31,11 +31,22 @@ final class MockRequestService: RequestServicing {
         stored[index].status = .open
         stored[index].expiresAt = expiresAt
     }
+    
+    func openRequests() async throws -> [MedicineRequest] {
+        stored.filter { $0.status == .open }
+    }
+
+    func markFound(_ requestID: String, via response: AvailabilityResponse?, by ownerID: String) async throws {
+        guard let index = stored.firstIndex(where: { $0.id == requestID }) else { return }
+        stored[index].status = .found
+        stored[index].foundResponseID = response?.id
+    }
 }
 
 @MainActor
 final class MockResponseService: ResponseServicing {
     var responses: [AvailabilityResponse] = []
+    var votes: [String: Confirmation.Verdict] = [:]       // "responseID|userID" → verdict
 
     func responses(forMedicineKey key: String) async throws -> [AvailabilityResponse] {
         responses.filter { $0.medicineKey == key }
@@ -43,5 +54,21 @@ final class MockResponseService: ResponseServicing {
 
     func responses(forRequestID id: String) async throws -> [AvailabilityResponse] {
         responses.filter { $0.requestID == id }
+    }
+
+    func create(_ response: AvailabilityResponse) async throws {
+        responses.append(response)
+    }
+
+    func hasVoted(on responseID: String, userID: String) async throws -> Bool {
+        votes["\(responseID)|\(userID)"] != nil
+    }
+
+    func vote(_ verdict: Confirmation.Verdict, on response: AvailabilityResponse, by userID: String) async throws {
+        votes["\(response.id)|\(userID)"] = verdict
+        let outcome = VoteRules.apply(verdict, by: userID, to: response)
+        if let index = responses.firstIndex(where: { $0.id == response.id }) {
+            responses[index] = outcome.updatedResponse
+        }
     }
 }

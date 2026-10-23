@@ -11,6 +11,8 @@ struct AccountView: View {
     @Environment(AppViewModel.self) private var app
     @State private var activeSheet: AuthSheet?
     @State private var signOutError: String?
+    @Environment(ServiceContainer.self) private var services
+    @State private var reputation: Int?
 
     enum AuthSheet: Identifiable {
         case signIn, createAccount
@@ -23,7 +25,7 @@ struct AccountView: View {
         List {
             Section {
                 LabeledContent("Role", value: app.profile?.role.displayName ?? "—")
-                LabeledContent("Reputation", value: "\(app.profile?.reputation ?? 0)")
+                LabeledContent("Reputation", value: reputation.map(String.init) ?? "…")
                 LabeledContent("Status", value: app.isAnonymous ? "Anonymous" : "Signed in")
             }
 
@@ -57,6 +59,11 @@ struct AccountView: View {
             }
         }
         .navigationTitle("Account")
+        .task {
+            guard let userID = app.authService.currentUserID,
+                  let entries = try? await services.reputation.entries(for: userID) else { return }
+            reputation = ReputationPolicy.total(of: entries)
+        }
         .sheet(item: $activeSheet) { sheet in
             NavigationStack {
                 switch sheet {

@@ -7,8 +7,13 @@
 
 import SwiftUI
 
-/// Everything about one report. On-site voting arrives in Phase 6.
+/// Everything about one report. On-site voting
+///
+
 struct SourceDetailView: View {
+    
+    @Environment(ServiceContainer.self) private var services
+    
     let source: ScoredResponse
     let pharmacy: Pharmacy?
 
@@ -47,6 +52,9 @@ struct SourceDetailView: View {
                 LabeledContent("Sold out now", value: "\(response.soldOutCount)")
                 LabeledContent("It was never here", value: "\(response.neverHereCount)")
             }
+            OnSiteConfirmView(viewModel: services.makeOnSiteConfirmViewModel(
+                response: response, pharmacy: pharmacy))
+            
 
             if let pharmacy {
                 Section {

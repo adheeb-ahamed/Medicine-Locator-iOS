@@ -57,16 +57,17 @@ struct RequestDetailView: View {
         }
         .navigationTitle(request.medicine.name)
         .navigationBarTitleDisplayMode(.inline)
+        .refreshable { await sources.load() }
         .confirmationDialog("Where did you find it?",
                             isPresented: $showingFoundOptions,
                             titleVisibility: .visible) {
             ForEach(sources.sources) { source in
                 Button(source.response.pharmacyName) {
-                    Task { await myRequests.markFound(request, responseID: source.response.id); dismiss() }
+                    Task { await myRequests.markFound(request, response: source.response); dismiss() }
                 }
             }
             Button("Somewhere else") {
-                Task { await myRequests.markFound(request, responseID: nil); dismiss() }
+                Task { await myRequests.markFound(request, response: nil); dismiss() }
             }
             Button("Cancel", role: .cancel) {}
         }

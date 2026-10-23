@@ -17,7 +17,7 @@ extension ServiceContainer {
     }
 
     func makeSourcesViewModel(_ scope: SourcesViewModel.Scope) -> SourcesViewModel {
-        SourcesViewModel(scope: scope, responseService: response, pharmacyService: pharmacies)
+        SourcesViewModel(scope: scope, responseService: responses, pharmacyService: pharmacies)
     }
 
     func makeNewRequestViewModel(medicineName: String = "") -> NewRequestViewModel {
@@ -30,5 +30,26 @@ extension ServiceContainer {
 
     func makeMyRequestsViewModel() -> MyRequestsViewModel {
         MyRequestsViewModel(requestService: requests, authService: auth)
+    }
+    
+    func makeHelpViewModel() -> HelpViewModel {
+        HelpViewModel(requestService: requests, locationService: location, authService: auth)
+    }
+
+    func makeRespondViewModel(for request: MedicineRequest) -> RespondViewModel {
+        RespondViewModel(request: request,
+                         responseService: responses,
+                         pharmacyService: pharmacies,
+                         locationService: location,
+                         authService: auth)
+    }
+
+    func makeOnSiteConfirmViewModel(response: AvailabilityResponse,
+                                    pharmacy: Pharmacy?) -> OnSiteConfirmViewModel {
+        OnSiteConfirmViewModel(response: response,
+                               pharmacy: pharmacy,
+                               responseService: responses,
+                               locationService: location,
+                               authService: auth)
     }
 }

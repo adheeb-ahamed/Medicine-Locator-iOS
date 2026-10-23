@@ -11,6 +11,10 @@ import Foundation
 protocol RequestServicing {
     func create(_ request: MedicineRequest) async throws
     func requests(ownedBy ownerID: String) async throws -> [MedicineRequest]
+    func openRequests() async throws -> [MedicineRequest]                              
+    func markFound(_ requestID: String,
+                   via response: AvailabilityResponse?,
+                   by ownerID: String) async throws
     func setStatus(_ status: MedicineRequest.Status,
                    foundResponseID: String?,
                    for requestID: String) async throws

@@ -22,6 +22,15 @@ struct Confirmation: Codable, Identifiable {
             case .neverHere:      "It was never here"
             }
         }
+        
+        /// The counter on AvailabilityResponse this verdict increases.
+        var countField: String {
+            switch self {
+            case .stillAvailable: "stillAvailableCount"
+            case .soldOut:        "soldOutCount"
+            case .neverHere:      "neverHereCount"
+            }
+        }
     }
 
     let id: String              // = userID, so each person gets exactly ONE vote

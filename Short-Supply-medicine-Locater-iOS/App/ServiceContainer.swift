@@ -20,7 +20,8 @@ final class ServiceContainer {
     let location: LocationServicing
     let searchHistory: SearchHistoryServicing
     let requests : RequestServicing
-    let response : ResponseServicing
+    let responses : ResponseServicing
+    let reputation: ReputationServicing
 
     init(auth: AuthServicing,
          users: UserServicing,
@@ -29,7 +30,8 @@ final class ServiceContainer {
          location: LocationServicing,
          searchHistory: SearchHistoryServicing,
          requests : RequestServicing,
-         responses : ResponseServicing) {
+         responses : ResponseServicing,
+         reputation : ReputationServicing) {
         self.auth = auth
         self.users = users
         self.biometrics = biometrics
@@ -37,7 +39,8 @@ final class ServiceContainer {
         self.location = location
         self.searchHistory = searchHistory
         self.requests = requests
-        self.response = responses
+        self.responses = responses
+        self.reputation = reputation
     }
 
     /// The real services used when the app runs.
@@ -50,7 +53,8 @@ final class ServiceContainer {
             location: LocationService(),
             searchHistory: CoreDataSearchHistoryService(context: context),
             requests: FirestoreRequestService(),
-            responses: FirestoreResponseService()
+            responses: FirestoreResponseService(),
+            reputation: FirestoreReputationService()
         )
     }
 }

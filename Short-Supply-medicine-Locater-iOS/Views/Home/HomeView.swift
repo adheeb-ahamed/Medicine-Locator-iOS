@@ -31,9 +31,7 @@ struct HomeView: View {
                 }
 
                 NavigationLink {
-                    ContentUnavailableView("Help nearby is coming",
-                                           systemImage: "hand.raised",
-                                           description: Text("You'll be able to answer requests near you in Phase 6."))
+                    HelpFeedView(viewModel: services.makeHelpViewModel())
                 } label: {
                     ActionCard(icon: "hand.raised",
                                title: "Help nearby",

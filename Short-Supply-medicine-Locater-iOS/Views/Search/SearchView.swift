@@ -76,5 +76,6 @@ struct SearchView: View {
             }
         }
         .task { viewModel.loadHistory() }
+        .refreshable { await viewModel.sources?.load() }
     }
 }

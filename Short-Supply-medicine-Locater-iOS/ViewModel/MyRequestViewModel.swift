@@ -39,8 +39,11 @@ final class MyRequestsViewModel {
         }
     }
 
-    func markFound(_ request: MedicineRequest, responseID: String?) async {
-        await perform { try await self.requestService.setStatus(.found, foundResponseID: responseID, for: request.id) }
+    func markFound(_ request: MedicineRequest, response: AvailabilityResponse?) async {
+        guard let ownerID = authService.currentUserID else { return }
+        await perform {
+            try await self.requestService.markFound(request.id, via: response, by: ownerID)
+        }
     }
 
     func close(_ request: MedicineRequest) async {

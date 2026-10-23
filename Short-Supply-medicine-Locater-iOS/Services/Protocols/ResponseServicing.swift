@@ -7,9 +7,13 @@
 
 import Foundation
 
-/// Reading responses now; writing them is added in Phase 6.
 @MainActor
 protocol ResponseServicing {
     func responses(forMedicineKey key: String) async throws -> [AvailabilityResponse]
     func responses(forRequestID id: String) async throws -> [AvailabilityResponse]
+    func create(_ response: AvailabilityResponse) async throws                          
+    func hasVoted(on responseID: String, userID: String) async throws -> Bool
+    func vote(_ verdict: Confirmation.Verdict,
+              on response: AvailabilityResponse,
+              by userID: String) async throws
 }

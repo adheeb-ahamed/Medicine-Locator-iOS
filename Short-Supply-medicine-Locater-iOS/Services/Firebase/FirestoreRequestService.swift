@@ -47,4 +47,40 @@ final class FirestoreRequestService: RequestServicing {
             "expiresAt": expiresAt
         ])
     }
+    
+    func openRequests() async throws -> [MedicineRequest] {
+        let snapshot = try await collection
+            .whereField("status", isEqualTo: MedicineRequest.Status.open.rawValue)
+            .getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: MedicineRequest.self) }
+    }
+
+    /// Mark found and, if a response helped, give its author +25 — in one batch.
+    func markFound(_ requestID: String,
+                   via response: AvailabilityResponse?,
+                   by ownerID: String) async throws {
+        let db = Firestore.firestore()
+        let batch = db.batch()
+
+        var fields: [String: Any] = ["status": MedicineRequest.Status.found.rawValue]
+        if let response {
+            fields["foundResponseID"] = response.id
+        } else {
+            fields["foundResponseID"] = FieldValue.delete()
+        }
+        batch.updateData(fields, forDocument: collection.document(requestID))
+
+        if let response, response.responderID != ownerID {
+            let entry = ReputationEntry(id: "found_\(requestID)_\(response.id)",
+                                        userID: response.responderID,
+                                        reason: .responseMarkedFound,
+                                        responseID: response.id,
+                                        requestID: requestID,
+                                        createdAt: .now)
+            try batch.setData(from: entry,
+                              forDocument: db.collection("reputationEvents").document(entry.id))
+        }
+
+        try await batch.commit()
+    }
 }

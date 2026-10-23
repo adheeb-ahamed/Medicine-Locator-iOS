@@ -34,7 +34,7 @@ struct MyRequestsViewModelTests {
     @Test func markingFoundMovesToPast() async {
         let (vm, requests) = makeSUT()
         await vm.load()
-        await vm.markFound(vm.active[0], responseID: "response-1")
+        await vm.markFound(vm.active[0], response: TestData.response(id: "response-1"))
         #expect(vm.active.isEmpty)
         #expect(requests.stored[0].foundResponseID == "response-1")
     }

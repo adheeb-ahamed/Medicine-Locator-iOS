@@ -15,6 +15,9 @@ enum Constants {
         static let onSiteRadius: Double = 100
         /// "Pharmacies near you" shows pharmacies within this distance.
         static let nearbyRadius : Double = 10_000
+        
+        /// Help feed shows requests whose district centre is within this distance.
+        static let helpRadius: Double = 20_000      // NEW: 20 km
     }
 
     enum Lifetime {

@@ -12,25 +12,49 @@ import Foundation
 enum TestData {
     static let t0 = Date(timeIntervalSince1970: 1_800_000_000)
 
-    static func response(source: AvailabilityResponse.Source = .community,
+    static func response(id: String = "response-1",
+                         requestID: String? = "request-1",
+                         medicineKey: String = "imatinib",
+                         source: AvailabilityResponse.Source = .community,
                          onSite: Bool = true,
                          stillAvailable: Int = 0,
                          soldOut: Int = 0,
                          neverHere: Int = 0,
+                         createdAt: Date = t0,
                          lifetimeHours: Double = 6) -> AvailabilityResponse {
         AvailabilityResponse(
-            id: "response-1",
-            requestID: "request-1",
+            id: id,
+            requestID: requestID,
             responderID: "user-1",
             pharmacyID: "pharmacy-1",
             pharmacyName: "Test Pharmacy",
+            medicineKey: medicineKey,
+            medicineName: "Imatinib 400 mg",
             source: source,
             wasOnSite: onSite,
-            createdAt: t0,
-            expiresAt: t0 + .hours(lifetimeHours),
+            createdAt: createdAt,
+            expiresAt: createdAt + .hours(lifetimeHours),
             stillAvailableCount: stillAvailable,
             soldOutCount: soldOut,
             neverHereCount: neverHere
+        )
+    }
+
+    static func request(id: String = "request-1",
+                        ownerID: String = "anon-user",
+                        status: MedicineRequest.Status = .open,
+                        expiresAt: Date = .now + .days(7)) -> MedicineRequest {
+        MedicineRequest(
+            id: id,
+            ownerID: ownerID,
+            medicine: Medicine(name: "Imatinib", strength: "400 mg", isControlled: false),
+            areaName: "Colombo",
+            areaLatitude: 6.9,
+            areaLongitude: 79.85,
+            status: status,
+            createdAt: .now,
+            expiresAt: expiresAt,
+            responseCount: 0
         )
     }
     

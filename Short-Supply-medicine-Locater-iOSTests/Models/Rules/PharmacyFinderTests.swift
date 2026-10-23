@@ -35,4 +35,18 @@ struct PharmacyFinderTests {
         #expect(PharmacyFinder.matching("NEAR", in: [near, far]).map(\.id) == ["near"])
         #expect(PharmacyFinder.matching("gampaha", in: [near, far]).map(\.id) == ["far"])
     }
+    
+    @Test func districtsAreUniqueAndSorted() {
+        let list = [far, near, middle]     // Gampaha, Colombo, Colombo
+        #expect(PharmacyFinder.districts(in: list) == ["Colombo", "Gampaha"])
+    }
+
+    @Test func nearestDistrictUsesClosestPharmacy() {
+        #expect(PharmacyFinder.nearestDistrict(to: origin, in: [far, near]) == "Colombo")
+    }
+
+    @Test func centreIsAverageOfDistrictPharmacies() {
+        let centre = PharmacyFinder.centre(of: "Colombo", in: [near, middle, far])
+        #expect(abs(centre!.latitude - 6.9644) < 0.0001)   // average of 6.9444 and 6.9844
+    }
 }

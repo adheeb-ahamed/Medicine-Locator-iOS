@@ -26,6 +26,11 @@ struct MainTabView: View {
                 ))
             }
             .tabItem { Label("Map", systemImage: "map") }
+            
+            NavigationStack {
+                MyRequestsView(viewModel: services.makeMyRequestsViewModel())
+            }
+            .tabItem { Label("My Requests", systemImage: "tray.full") }
 
             NavigationStack {
                 AccountView()

@@ -39,4 +39,25 @@ enum PharmacyFinder {
             $0.address.localizedCaseInsensitiveContains(query)
         }
     }
+    
+    /// Every district in the list, A–Z, no duplicates.
+    static func districts(in pharmacies: [Pharmacy]) -> [String] {
+        Array(Set(pharmacies.map(\.district))).sorted()
+    }
+
+    /// The district of the closest pharmacy (used to pre-select the user's area).
+    static func nearestDistrict(to location: CLLocation, in pharmacies: [Pharmacy]) -> String? {
+        pharmacies.min { $0.distance(from: location) < $1.distance(from: location) }?.district
+    }
+
+    /// The average position of a district's pharmacies — a public point, not the user's location.
+    static func centre(of district: String, in pharmacies: [Pharmacy]) -> CLLocationCoordinate2D? {
+        let inDistrict = pharmacies.filter { $0.district == district }
+        guard !inDistrict.isEmpty else { return nil }
+        let count = Double(inDistrict.count)
+        return CLLocationCoordinate2D(
+            latitude: inDistrict.map(\.latitude).reduce(0, +) / count,
+            longitude: inDistrict.map(\.longitude).reduce(0, +) / count
+        )
+    }
 }

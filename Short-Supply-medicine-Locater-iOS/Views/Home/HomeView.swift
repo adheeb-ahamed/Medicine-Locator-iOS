@@ -23,7 +23,7 @@ struct HomeView: View {
             // The two things anyone can do
             Section {
                 NavigationLink {
-                    SearchView(viewModel: SearchViewModel(historyService: services.searchHistory))
+                    SearchView(viewModel: services.makeSearchViewModel())
                 } label: {
                     ActionCard(icon: "magnifyingglass",
                                title: "Find a medicine",

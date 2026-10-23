@@ -20,4 +20,11 @@ struct Medicine: Codable, Hashable, Identifiable {
     var displayName: String {
         strength.isEmpty ? name : "\(name) \(strength)"
     }
+    
+    /// Normalised name used for matching: "  Imatinib " → "imatinib"
+    var key: String { Self.key(for: name) }
+
+    static func key(for name: String) -> String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
 }

@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-/// "Find a medicine" — search box + recent searches (stored on-device).
+/// "Find a medicine" — results ranked by trust, recent searches, and "Ask people nearby".
 struct SearchView: View {
+    @Environment(ServiceContainer.self) private var services
     @State private var viewModel: SearchViewModel
+    @State private var showingNewRequest = false
 
     init(viewModel: SearchViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -17,25 +19,25 @@ struct SearchView: View {
 
     var body: some View {
         List {
-            if let submitted = viewModel.submittedQuery {
+            if let submitted = viewModel.submittedQuery, let sources = viewModel.sources {
+                SourcesListView(viewModel: sources,
+                                emptyMessage: "No one has reported \(submitted) yet.")
+
                 Section {
-                    ContentUnavailableView {
-                        Label("No reports for \(submitted) yet", systemImage: "magnifyingglass")
-                    } description: {
-                        Text("Soon you'll be able to ask people nearby to check licensed pharmacies for you.")
-                    } actions: {
-                        Button("Ask the community") {}
-                            .disabled(true)          // enabled in Phase 5
+                    Button {
+                        showingNewRequest = true
+                    } label: {
+                        Label("Ask people nearby to look for \(submitted)", systemImage: "megaphone")
                     }
+                } footer: {
+                    Text("Anonymous. Only your district is shared.")
                 }
             }
 
             if !viewModel.history.isEmpty {
                 Section {
                     ForEach(viewModel.history, id: \.self) { item in
-                        Button {
-                            viewModel.select(item)
-                        } label: {
+                        Button { viewModel.select(item) } label: {
                             Label(item, systemImage: "clock.arrow.circlepath")
                         }
                         .foregroundStyle(.primary)
@@ -45,8 +47,7 @@ struct SearchView: View {
                     HStack {
                         Text("Recent searches")
                         Spacer()
-                        Button("Clear") { viewModel.clearHistory() }
-                            .font(.caption)
+                        Button("Clear") { viewModel.clearHistory() }.font(.caption)
                     }
                 } footer: {
                     Text("Saved only on this iPhone.")
@@ -67,6 +68,12 @@ struct SearchView: View {
         .onSubmit(of: .search) { viewModel.submit() }
         .onChange(of: viewModel.query) { _, newValue in
             if newValue.isEmpty { viewModel.clearResult() }
+        }
+        .sheet(isPresented: $showingNewRequest) {
+            NavigationStack {
+                NewRequestView(viewModel: services.makeNewRequestViewModel(
+                    medicineName: viewModel.submittedQuery ?? ""))
+            }
         }
         .task { viewModel.loadHistory() }
     }

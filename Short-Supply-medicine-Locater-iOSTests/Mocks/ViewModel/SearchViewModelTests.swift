@@ -11,9 +11,17 @@ import Testing
 @MainActor
 struct SearchViewModelTests {
 
+    /// Builds a SearchViewModel whose sources use mock services.
+    private func makeSUT(_ history: MockSearchHistoryService? = nil) -> SearchViewModel {
+        SearchViewModel(historyService: history ?? MockSearchHistoryService()) { key in
+            SourcesViewModel(scope: .medicine(key: key),
+                             responseService: MockResponseService(),
+                             pharmacyService: MockPharmacyService())
+        }
+    }
+
     @Test func submitTrimsAndRecords() {
-        let history = MockSearchHistoryService()
-        let vm = SearchViewModel(historyService: history)
+        let vm = makeSUT()
         vm.query = "  Imatinib  "
         vm.submit()
         #expect(vm.submittedQuery == "Imatinib")
@@ -21,17 +29,16 @@ struct SearchViewModelTests {
     }
 
     @Test func emptySearchIsIgnored() {
-        let history = MockSearchHistoryService()
-        let vm = SearchViewModel(historyService: history)
+        let vm = makeSUT()
         vm.query = "   "
         vm.submit()
         #expect(vm.submittedQuery == nil)
         #expect(vm.history.isEmpty)
+        #expect(vm.sources == nil)
     }
 
     @Test func selectingHistoryRunsItAgainAtTheTop() {
-        let history = MockSearchHistoryService()
-        let vm = SearchViewModel(historyService: history)
+        let vm = makeSUT()
         vm.query = "Tamoxifen"; vm.submit()
         vm.query = "Imatinib";  vm.submit()
         vm.select("Tamoxifen")
@@ -40,10 +47,24 @@ struct SearchViewModelTests {
     }
 
     @Test func clearHistoryEmptiesTheList() {
-        let history = MockSearchHistoryService()
-        let vm = SearchViewModel(historyService: history)
+        let vm = makeSUT()
         vm.query = "Imatinib"; vm.submit()
         vm.clearHistory()
         #expect(vm.history.isEmpty)
+    }
+
+    @Test func submittingCreatesSourcesForTheNormalisedKey() {
+        let vm = makeSUT()
+        vm.query = "  Imatinib "
+        vm.submit()
+        #expect(vm.sources?.scope == .medicine(key: "imatinib"))
+    }
+
+    @Test func clearingTheResultRemovesSources() {
+        let vm = makeSUT()
+        vm.query = "Imatinib"; vm.submit()
+        vm.clearResult()
+        #expect(vm.submittedQuery == nil)
+        #expect(vm.sources == nil)
     }
 }

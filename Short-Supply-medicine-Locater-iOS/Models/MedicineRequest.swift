@@ -14,6 +14,15 @@ struct MedicineRequest: Codable, Identifiable {
         case found      // patient marked it found
         case expired    // 7 days passed without renewal
         case closed     // closed by the patient
+        
+        var label: String {
+            switch self {
+            case .open:    "Looking"
+            case .found:   "Found"
+            case .expired: "Expired"
+            case .closed:  "Closed"
+            }
+        }
     }
 
     let id: String
@@ -26,11 +35,17 @@ struct MedicineRequest: Codable, Identifiable {
     var createdAt: Date
     var expiresAt: Date
     var responseCount: Int
+    var foundResponseID: String?      // which response helped (nil = found elsewhere)
 
     /// Open AND not past its expiry date.
     /// `now` is a parameter so tests can pass a fixed date.
     func isActive(at now: Date = .now) -> Bool {
         status == .open && expiresAt > now
+    }
+    
+    /// "Open" requests past their expiry date count as expired.
+    func effectiveStatus(at now: Date = .now) -> Status {
+        status == .open && expiresAt <= now ? .expired : status
     }
 
     /// Rounds a coordinate to the nearest 0.05° (about 5.5 km)

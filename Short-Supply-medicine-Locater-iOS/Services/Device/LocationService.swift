@@ -52,6 +52,12 @@ final class LocationService: NSObject, LocationServicing {
             }
         }
     }
+    
+    /// Ask to upgrade from "While Using" to "Always" (needed for arrival prompts).
+    /// iOS shows this prompt at most once; after that the user must use Settings.
+    func requestAlwaysPermission() {
+        manager.requestAlwaysAuthorization()
+    }
 
     // MARK: - Hand the answer to everyone waiting
 

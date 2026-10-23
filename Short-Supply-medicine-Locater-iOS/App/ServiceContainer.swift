@@ -19,9 +19,12 @@ final class ServiceContainer {
     let pharmacies: PharmacyServicing
     let location: LocationServicing
     let searchHistory: SearchHistoryServicing
-    let requests : RequestServicing
-    let responses : ResponseServicing
+    let requests: RequestServicing
+    let responses: ResponseServicing
     let reputation: ReputationServicing
+    let notifications: NotificationServicing      // Phase 7
+    let answerWatcher: AnswerWatcher              // Phase 7
+    let arrivals: ArrivalMonitoring               // Phase 7
 
     init(auth: AuthServicing,
          users: UserServicing,
@@ -29,9 +32,12 @@ final class ServiceContainer {
          pharmacies: PharmacyServicing,
          location: LocationServicing,
          searchHistory: SearchHistoryServicing,
-         requests : RequestServicing,
-         responses : ResponseServicing,
-         reputation : ReputationServicing) {
+         requests: RequestServicing,
+         responses: ResponseServicing,
+         reputation: ReputationServicing,
+         notifications: NotificationServicing,
+         answerWatcher: AnswerWatcher,
+         arrivals: ArrivalMonitoring) {
         self.auth = auth
         self.users = users
         self.biometrics = biometrics
@@ -41,20 +47,45 @@ final class ServiceContainer {
         self.requests = requests
         self.responses = responses
         self.reputation = reputation
+        self.notifications = notifications
+        self.answerWatcher = answerWatcher
+        self.arrivals = arrivals
     }
 
     /// The real services used when the app runs.
     static func live(context: NSManagedObjectContext) -> ServiceContainer {
-        ServiceContainer(
-            auth: FirebaseAuthService(),
+        // Services that others depend on are created first.
+        let auth = FirebaseAuthService()
+        let pharmacies = PharmacyService(context: context)
+        let location = LocationService()
+        let requests = FirestoreRequestService()
+        let responses = FirestoreResponseService()
+        let notifications = NotificationService()
+
+        return ServiceContainer(
+            auth: auth,
             users: FirestoreUserService(),
             biometrics: BiometricService(),
-            pharmacies: PharmacyService(context: context),
-            location: LocationService(),
+            pharmacies: pharmacies,
+            location: location,
             searchHistory: CoreDataSearchHistoryService(context: context),
-            requests: FirestoreRequestService(),
-            responses: FirestoreResponseService(),
-            reputation: FirestoreReputationService()
+            requests: requests,
+            responses: responses,
+            reputation: FirestoreReputationService(),
+            notifications: notifications,
+            answerWatcher: AnswerWatcher(requestService: requests,
+                                         responseService: responses,
+                                         notificationService: notifications,
+                                         authService: auth),
+            arrivals: RegionMonitorService(pharmacyService: pharmacies,
+                                           locationService: location,
+                                           notificationService: notifications)
         )
+    }
+
+    /// Called every time the app comes to the front.
+    func appDidBecomeActive() async {
+        await answerWatcher.checkForNewAnswers()
+        await arrivals.resumeIfEnabled()
     }
 }

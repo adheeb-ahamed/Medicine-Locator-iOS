@@ -14,6 +14,7 @@ protocol LocationServicing {
     var authorizationStatus: CLAuthorizationStatus { get }
     func requestPermission() async -> CLAuthorizationStatus
     func currentLocation() async throws -> CLLocation
+    func requestAlwaysPermission()
 }
 
 enum LocationError: LocalizedError {

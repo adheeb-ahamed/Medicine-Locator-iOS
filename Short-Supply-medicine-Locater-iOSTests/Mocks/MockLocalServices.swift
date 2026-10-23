@@ -32,6 +32,8 @@ final class MockLocationService: LocationServicing {
     }
 
     func currentLocation() async throws -> CLLocation { location }
+    
+    func requestAlwaysPermission() { authorizationStatus = .authorizedAlways }
 }
 
 @MainActor

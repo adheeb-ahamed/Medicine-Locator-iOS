@@ -11,20 +11,22 @@ import Foundation
 enum Constants {
 
     enum Location {
-        /// You must be within this many metres of a pharmacy to vote on-site.
+        /// You must be within this many metres of a pharmacy to vote on-site. (Phase 3/6)
         static let onSiteRadius: Double = 100
-        /// "Pharmacies near you" shows pharmacies within this distance.
-        static let nearbyRadius : Double = 10_000
-        
-        /// Help feed shows requests whose district centre is within this distance.
-        static let helpRadius: Double = 20_000      // NEW: 20 km
+        /// "Pharmacies near you" shows pharmacies within this distance. (Phase 4)
+        static let nearbyRadius: Double = 10_000          // 10 km
+        /// Help feed shows requests whose district centre is within this distance. (Phase 6)
+        static let helpRadius: Double = 20_000            // 20 km
+        /// Size of the "you've arrived" circle around a pharmacy. (Phase 7)
+        /// iOS region monitoring is unreliable below ~100 m, so we use 150 m.
+        static let arrivalRadius: Double = 150
     }
 
     enum Lifetime {
-        static let request: TimeInterval              = .days(7)
-        static let communityResponse: TimeInterval    = .hours(6)
+        static let request: TimeInterval               = .days(7)
+        static let communityResponse: TimeInterval     = .hours(6)
         static let confirmationExtension: TimeInterval = .hours(2)
-        static let communityResponseMax: TimeInterval = .hours(12)
+        static let communityResponseMax: TimeInterval  = .hours(12)
     }
 
     enum Closing {

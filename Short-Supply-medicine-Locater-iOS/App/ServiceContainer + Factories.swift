@@ -28,9 +28,6 @@ extension ServiceContainer {
                             authService: auth)
     }
 
-    func makeMyRequestsViewModel() -> MyRequestsViewModel {
-        MyRequestsViewModel(requestService: requests, authService: auth)
-    }
     
     func makeHelpViewModel() -> HelpViewModel {
         HelpViewModel(requestService: requests, locationService: location, authService: auth)
@@ -51,5 +48,18 @@ extension ServiceContainer {
                                responseService: responses,
                                locationService: location,
                                authService: auth)
+    }
+    
+
+    func makeNotificationSettingsViewModel() -> NotificationSettingsViewModel {
+        NotificationSettingsViewModel(notificationService: notifications,
+                                      locationService: location,
+                                      arrivals: arrivals)
+    }
+
+    func makeMyRequestsViewModel() -> MyRequestsViewModel {      // REPLACES the Phase 5 version
+        MyRequestsViewModel(requestService: requests,
+                            authService: auth,
+                            notificationService: notifications)
     }
 }

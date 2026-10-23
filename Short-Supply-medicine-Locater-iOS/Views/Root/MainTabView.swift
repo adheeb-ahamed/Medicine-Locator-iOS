@@ -43,5 +43,11 @@ struct MainTabView: View {
             .tabItem { Label("Account", systemImage: "person.crop.circle") }
         }
         .tint(Theme.accent)
+        .task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(60))
+                await services.answerWatcher.checkForNewAnswers()
+            }
+        }
     }
 }

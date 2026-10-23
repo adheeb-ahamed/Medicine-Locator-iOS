@@ -19,6 +19,17 @@ struct MyRequestsView: View {
 
     var body: some View {
         List {
+            if viewModel.showNotificationNudge {
+                Section {
+                    PermissionPromptView(
+                        icon: "bell.badge",
+                        title: "Get notified when someone answers",
+                        message: "Notifications are discreet by default — no medicine names on your lock screen.",
+                        buttonTitle: "Turn on notifications") {
+                            Task { await viewModel.enableNotifications() }
+                        }
+                }
+            }
             if !viewModel.active.isEmpty {
                 Section("Looking for") {
                     ForEach(viewModel.active) { row(for: $0) }

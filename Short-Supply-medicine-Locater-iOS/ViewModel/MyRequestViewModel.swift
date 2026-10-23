@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import UserNotifications
 
 /// "My Requests" — the watchlist (MVP item 9).
 @MainActor
@@ -15,13 +16,18 @@ final class MyRequestsViewModel {
     private(set) var requests: [MedicineRequest] = []
     private(set) var isLoading = false
     private(set) var errorMessage: String?
+    private(set) var showNotificationNudge = false
 
     private let requestService: RequestServicing
     private let authService: AuthServicing
+    private let notificationService: NotificationServicing?
 
-    init(requestService: RequestServicing, authService: AuthServicing) {
-        self.requestService = requestService
-        self.authService = authService
+    init(requestService: RequestServicing,
+             authService: AuthServicing,
+             notificationService: NotificationServicing? = nil) {
+            self.requestService = requestService
+            self.authService = authService
+            self.notificationService = notificationService
     }
 
     var active: [MedicineRequest] { requests.filter { $0.effectiveStatus() == .open } }
@@ -37,6 +43,7 @@ final class MyRequestsViewModel {
         } catch {
             errorMessage = error.localizedDescription
         }
+        await checkNotificationStatus()
     }
 
     func markFound(_ request: MedicineRequest, response: AvailabilityResponse?) async {
@@ -52,6 +59,18 @@ final class MyRequestsViewModel {
 
     func renew(_ request: MedicineRequest) async {
         await perform { try await self.requestService.renew(request.id, until: ExpiryPolicy.requestExpiry(from: .now)) }
+    }
+    
+    /// Suggest turning on notifications only when it's useful: you have requests and haven't decided yet.
+    func checkNotificationStatus() async {
+        guard let notificationService else { return }
+        let status = await notificationService.authorizationStatus()
+        showNotificationNudge = status == .notDetermined && !requests.isEmpty
+    }
+
+    func enableNotifications() async {
+        _ = await notificationService?.requestPermission()
+        await checkNotificationStatus()
     }
 
     /// Run a change, then reload so the list is up to date.

@@ -32,6 +32,11 @@ struct AccountView: View {
             Section {
                 Toggle("Lock with Face ID", isOn: $app.isAppLockEnabled)
                     .disabled(!app.isBiometricAvailable)
+                NavigationLink {
+                    NotificationSettingsView(viewModel: services.makeNotificationSettingsViewModel())
+                } label: {
+                    Label("Notifications", systemImage: "bell")
+                }
             } header: {
                 Text("Security")
             } footer: {

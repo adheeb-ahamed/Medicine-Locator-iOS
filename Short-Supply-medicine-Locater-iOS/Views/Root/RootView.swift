@@ -23,7 +23,7 @@ struct RootView: View {
             LockView()
 
         case .ready:
-            MainTabView()
+            MainContainerView()
 
         case .failed(let message):
             ContentUnavailableView {

@@ -35,3 +35,13 @@ enum ReputationPolicy {
             .reduce(0) { running, entry in apply(entry.reason, to: running) }
     }
 }
+
+extension ReputationEvent {
+    var label: String {
+        switch self {
+        case .confirmedOnSite:      "Checked stock on-site"
+        case .responseMarkedFound:  "Your report helped someone"
+        case .responseProvedFalse:  "A report was proved wrong"
+        }
+    }
+}

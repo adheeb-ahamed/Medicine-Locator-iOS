@@ -89,4 +89,16 @@ struct AppViewModelTests {
         #expect(!vm.isAnonymous)
         #expect(auth.anonymousSignInCount == 1)   // same account, not a new one
     }
+    
+    @Test func deletingAccountReturnsToWelcome() async {
+        let (vm, _) = makeSUT(onboarded: true, lockEnabled: true)
+        await vm.start()
+        await vm.unlock()
+
+        vm.resetAfterAccountDeletion()
+
+        #expect(vm.phase == .onboarding)
+        #expect(vm.profile == nil)
+        #expect(!vm.isAppLockEnabled)
+    }
 }

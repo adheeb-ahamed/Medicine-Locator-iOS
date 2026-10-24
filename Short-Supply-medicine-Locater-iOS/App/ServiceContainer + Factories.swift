@@ -16,9 +16,6 @@ extension ServiceContainer {
         }
     }
 
-    func makeSourcesViewModel(_ scope: SourcesViewModel.Scope) -> SourcesViewModel {
-        SourcesViewModel(scope: scope, responseService: responses, pharmacyService: pharmacies)
-    }
 
     func makeNewRequestViewModel(medicineName: String = "") -> NewRequestViewModel {
         NewRequestViewModel(medicineName: medicineName,
@@ -84,5 +81,28 @@ extension ServiceContainer {
         PharmacyDashboardViewModel(profile: profile,
                                    responseService: responses,
                                    pharmacyService: pharmacies)
+    }
+    
+    func makeSourcesViewModel(_ scope: SourcesViewModel.Scope) -> SourcesViewModel {   // REPLACES old one
+        SourcesViewModel(scope: scope,
+                         responseService: responses,
+                         pharmacyService: pharmacies,
+                         connectivity: connectivity,
+                         cache: sourceCache)
+    }
+
+
+
+    func makeProfileViewModel() -> ProfileViewModel {
+        ProfileViewModel(reputationService: reputation, authService: auth)
+    }
+
+    func makeSettingsViewModel() -> SettingsViewModel {
+        SettingsViewModel(searchHistory: searchHistory, sourceCache: sourceCache, connectivity: connectivity)
+    }
+
+    func makeAccountViewModel() -> AccountViewModel {
+        AccountViewModel(authService: auth, userService: users,
+                         searchHistory: searchHistory, sourceCache: sourceCache)
     }
 }

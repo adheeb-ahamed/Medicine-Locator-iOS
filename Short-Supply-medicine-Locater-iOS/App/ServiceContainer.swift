@@ -27,6 +27,8 @@ final class ServiceContainer {
     let arrivals: ArrivalMonitoring
     let scanner : ScannerServicing
     let verification : VerificationServicing
+    let connectivity : ConnectivityServicing
+    let sourceCache : SourceCacheServicing
 
     init(auth: AuthServicing,
          users: UserServicing,
@@ -41,7 +43,9 @@ final class ServiceContainer {
          answerWatcher: AnswerWatcher,
          arrivals: ArrivalMonitoring,
          scanner:ScannerServicing,
-         verification:VerificationServicing) {
+         verification:VerificationServicing,
+         connectivity : ConnectivityServicing,
+         sourceCache : SourceCacheServicing) {
         self.auth = auth
         self.users = users
         self.biometrics = biometrics
@@ -56,6 +60,8 @@ final class ServiceContainer {
         self.arrivals = arrivals
         self.scanner = scanner
         self.verification = verification
+        self.connectivity = connectivity
+        self.sourceCache = sourceCache
     }
 
     /// The real services used when the app runs.
@@ -88,7 +94,9 @@ final class ServiceContainer {
                                            locationService: location,
                                            notificationService: notifications),
             scanner : VisionScannerService(),
-            verification: FirestoreVerificationService()
+            verification: FirestoreVerificationService(),
+            connectivity: ConnectivityService(),
+            sourceCache: CoreDataSourceCacheService(context: context)
         )
     }
 

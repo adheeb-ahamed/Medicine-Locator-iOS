@@ -38,4 +38,8 @@ final class FirestoreUserService: UserServicing {
         try ref.setData(from: profile)
         return profile
     }
+    
+    func deleteProfile(uid: String) async throws {
+        try await db.collection("users").document(uid).delete()
+    }
 }

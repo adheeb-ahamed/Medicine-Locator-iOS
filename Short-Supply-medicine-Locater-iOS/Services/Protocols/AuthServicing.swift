@@ -20,4 +20,13 @@ protocol AuthServicing {
     func createAccount(email: String, password: String) async throws -> String
     func sendPasswordReset(email: String) async throws
     func signOut() throws
+    func deleteAccount() async throws
+}
+
+enum AccountError: LocalizedError {
+    case requiresRecentLogin
+
+    var errorDescription: String? {
+        "For your security, please sign out, sign in again, then delete your account."
+    }
 }

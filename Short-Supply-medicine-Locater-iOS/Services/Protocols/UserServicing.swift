@@ -11,4 +11,5 @@ import Foundation
 @MainActor
 protocol UserServicing {
     func fetchOrCreateProfile(uid: String, email: String?) async throws -> UserProfile
+    func deleteProfile(uid: String) async throws
 }

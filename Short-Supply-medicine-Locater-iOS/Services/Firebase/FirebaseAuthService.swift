@@ -49,4 +49,14 @@ final class FirebaseAuthService: AuthServicing {
     func signOut() throws {
         try auth.signOut()
     }
+    
+    func deleteAccount() async throws {
+        guard let user = auth.currentUser else { return }
+        do {
+            try await user.delete()
+        } catch let error as NSError where error.code == 17014 {
+            // 17014 = AuthErrorCode.requiresRecentLogin: email accounts must have signed in recently.
+            throw AccountError.requiresRecentLogin
+        }
+    }
 }

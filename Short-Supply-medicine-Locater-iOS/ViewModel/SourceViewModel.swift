@@ -26,42 +26,76 @@ final class SourcesViewModel {
 
     private let responseService: ResponseServicing
     private let pharmacyService: PharmacyServicing
+    
+    private(set) var cached: [SourceSnapshot] = []      // shown when offline
+    private(set) var isOffline = false
 
-    init(scope: Scope, responseService: ResponseServicing, pharmacyService: PharmacyServicing) {
-        self.scope = scope
-        self.responseService = responseService
-        self.pharmacyService = pharmacyService
+    private let connectivity: ConnectivityServicing?
+    private let cache: SourceCacheServicing?
+
+    init(scope: Scope,
+             responseService: ResponseServicing,
+             pharmacyService: PharmacyServicing,
+             connectivity: ConnectivityServicing? = nil,       // nil in older tests → online, no cache
+             cache: SourceCacheServicing? = nil) {
+            self.scope = scope
+            self.responseService = responseService
+            self.pharmacyService = pharmacyService
+            self.connectivity = connectivity
+            self.cache = cache
     }
+    
+    var scopeKey: String {
+            switch scope {
+            case .medicine(let key):    "medicine:\(key)"
+            case .request(let id, _):   "request:\(id)"
+            }
+    }
+    
 
     func load() async {
         isLoading = true
         errorMessage = nil
         defer { isLoading = false; hasLoaded = true }
 
+        // Offline → show what we saved last time (only reports that haven't expired).
+        if let connectivity, !connectivity.isOnline {
+            isOffline = true
+            sources = []
+            cached = savedSnapshots()
+            return
+        }
+        isOffline = false
+
         do {
             let responses: [AvailabilityResponse]
             switch scope {
             case .medicine(let key):
                 responses = try await responseService.responses(forMedicineKey: key)
-
             case .request(let id, let medicineKey):
-                // Answers to this request + any verified pharmacy posts for the same medicine
                 let answers = try await responseService.responses(forRequestID: id)
                 let pharmacyPosts = try await responseService.responses(forMedicineKey: medicineKey)
                     .filter { $0.source == .verifiedPharmacy }
                     .filter { post in !answers.contains { $0.id == post.id } }
                 responses = answers + pharmacyPosts
             }
-            sources = SourceRanking.rank(responses)
 
-            // Look-up table so each source can show its pharmacy's address/directions.
+            sources = SourceRanking.rank(responses)
+            cached = []
+            cache?.save(sources, for: scopeKey)                // keep a copy for offline
+
             pharmaciesByID = Dictionary(
                 try pharmacyService.loadPharmacies().map { ($0.id, $0) },
                 uniquingKeysWith: { first, _ in first }
             )
         } catch {
             errorMessage = error.localizedDescription
+            cached = savedSnapshots()                          // network failed → fall back
         }
+    }
+
+    private func savedSnapshots() -> [SourceSnapshot] {
+        (cache?.load(for: scopeKey) ?? []).filter { $0.expiresAt > .now }
     }
 
     func pharmacy(for source: ScoredResponse) -> Pharmacy? {

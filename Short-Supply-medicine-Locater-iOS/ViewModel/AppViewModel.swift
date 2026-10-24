@@ -105,6 +105,14 @@ final class AppViewModel {
         phase = .loading
         await loadSession(lockAfterLoading: false)   // gives a fresh anonymous account
     }
+    
+    /// After deleting an account, start again from the welcome screen.
+    func resetAfterAccountDeletion() {
+        defaults.removeObject(forKey: Keys.onboarding)
+        isAppLockEnabled = false
+        profile = nil
+        phase = .onboarding
+    }
 
     // MARK: - Private
 

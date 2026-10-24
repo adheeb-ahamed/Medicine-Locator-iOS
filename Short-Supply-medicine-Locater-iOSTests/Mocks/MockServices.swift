@@ -20,6 +20,16 @@ final class MockAuthService: AuthServicing {
         currentUserID = "anon-user"
         return "anon-user"
     }
+    
+    var deleteError: Error?
+    private(set) var didDelete = false
+
+    func deleteAccount() async throws {
+        if let deleteError { throw deleteError }
+        didDelete = true
+        currentUserID = nil
+        currentEmail = nil
+    }
 
     func signIn(email: String, password: String) async throws -> String {
         currentUserID = "email-user"
@@ -43,6 +53,13 @@ final class MockAuthService: AuthServicing {
 /// Fake Firestore: returns a profile without touching the network.
 @MainActor
 final class MockUserService: UserServicing {
+    
+    private(set) var deletedUIDs: [String] = []
+
+    func deleteProfile(uid: String) async throws {
+        deletedUIDs.append(uid)
+    }
+    
     func fetchOrCreateProfile(uid: String, email: String?) async throws -> UserProfile {
         UserProfile(id: uid, role: .member, reputation: 0, email: email, createdAt: .now)
     }
@@ -55,6 +72,8 @@ final class MockBiometricService: BiometricServicing {
     var result: Bool
 
     init(result: Bool) { self.result = result }
+    
+    
 
     func authenticate(reason: String) async -> Bool { result }
 }

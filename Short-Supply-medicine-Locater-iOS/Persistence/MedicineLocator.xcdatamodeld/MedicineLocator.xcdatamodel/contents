@@ -25,6 +25,7 @@
         <attribute name="medicineName" optional="YES" attributeType="String"/>
         <attribute name="pharmacyID" optional="YES" attributeType="String"/>
         <attribute name="pharmacyName" optional="YES" attributeType="String"/>
+        <attribute name="scopeKey" optional="YES" attributeType="String"/>
         <attribute name="wasOnSite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>

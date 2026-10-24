@@ -80,7 +80,8 @@ struct MyRequestsView: View {
         NavigationLink {
             RequestDetailView(request: request,
                               myRequests: viewModel,
-                              sources: services.makeSourcesViewModel(.request(id: request.id)))
+                              sources: services.makeSourcesViewModel(
+                                  .request(id: request.id, medicineKey: request.medicine.key)))
         } label: {
             RequestRow(request: request)
         }

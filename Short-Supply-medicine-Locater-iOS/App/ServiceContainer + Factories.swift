@@ -66,4 +66,23 @@ extension ServiceContainer {
     func makeScanViewModel() -> ScanViewModel {
             ScanViewModel(scanner: scanner)
     }
+    
+
+    func makeVerifyPharmacyViewModel(profile: UserProfile) -> VerifyPharmacyViewModel {
+        VerifyPharmacyViewModel(profile: profile,
+                                verificationService: verification,
+                                pharmacyService: pharmacies)
+    }
+
+    func makeModeratorViewModel(moderatorID: String) -> ModeratorViewModel {
+        ModeratorViewModel(moderatorID: moderatorID,
+                           verificationService: verification,
+                           pharmacyService: pharmacies)
+    }
+
+    func makePharmacyDashboardViewModel(profile: UserProfile) -> PharmacyDashboardViewModel {
+        PharmacyDashboardViewModel(profile: profile,
+                                   responseService: responses,
+                                   pharmacyService: pharmacies)
+    }
 }

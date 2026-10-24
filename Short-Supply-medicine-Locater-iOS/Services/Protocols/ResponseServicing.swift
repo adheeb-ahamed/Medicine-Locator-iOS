@@ -16,4 +16,6 @@ protocol ResponseServicing {
     func vote(_ verdict: Confirmation.Verdict,
               on response: AvailabilityResponse,
               by userID: String) async throws
+    func posts(by responderID: String) async throws -> [AvailabilityResponse]     
+    func closePost(_ responseID: String) async throws
 }

@@ -14,7 +14,7 @@ import Observation
 final class SourcesViewModel {
     enum Scope: Equatable {
         case medicine(key: String)
-        case request(id: String)
+        case request(id: String, medicineKey : String)
     }
 
     let scope: Scope
@@ -41,8 +41,16 @@ final class SourcesViewModel {
         do {
             let responses: [AvailabilityResponse]
             switch scope {
-            case .medicine(let key): responses = try await responseService.responses(forMedicineKey: key)
-            case .request(let id):   responses = try await responseService.responses(forRequestID: id)
+            case .medicine(let key):
+                responses = try await responseService.responses(forMedicineKey: key)
+
+            case .request(let id, let medicineKey):
+                // Answers to this request + any verified pharmacy posts for the same medicine
+                let answers = try await responseService.responses(forRequestID: id)
+                let pharmacyPosts = try await responseService.responses(forMedicineKey: medicineKey)
+                    .filter { $0.source == .verifiedPharmacy }
+                    .filter { post in !answers.contains { $0.id == post.id } }
+                responses = answers + pharmacyPosts
             }
             sources = SourceRanking.rank(responses)
 

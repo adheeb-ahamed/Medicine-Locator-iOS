@@ -31,6 +31,7 @@ struct UserProfile: Codable, Identifiable, Equatable {
     var reputation: Int
     var email: String?      // nil = anonymous
     var createdAt: Date
+    var pharmacyID: String?    // set when a moderator approves this user as a pharmacy
 
     /// Anonymous users can still request and help.
     /// Linking an email only keeps their reputation safe if they change phones.

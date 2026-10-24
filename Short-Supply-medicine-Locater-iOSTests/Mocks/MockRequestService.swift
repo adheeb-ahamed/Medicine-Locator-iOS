@@ -71,4 +71,13 @@ final class MockResponseService: ResponseServicing {
             responses[index] = outcome.updatedResponse
         }
     }
+    
+    func posts(by responderID: String) async throws -> [AvailabilityResponse] {
+        responses.filter { $0.responderID == responderID }
+    }
+
+    func closePost(_ responseID: String) async throws {
+        guard let index = responses.firstIndex(where: { $0.id == responseID }) else { return }
+        responses[index].expiresAt = .now
+    }
 }

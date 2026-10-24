@@ -22,10 +22,11 @@ final class ServiceContainer {
     let requests: RequestServicing
     let responses: ResponseServicing
     let reputation: ReputationServicing
-    let notifications: NotificationServicing      // Phase 7
-    let answerWatcher: AnswerWatcher              // Phase 7
+    let notifications: NotificationServicing
+    let answerWatcher: AnswerWatcher
     let arrivals: ArrivalMonitoring
     let scanner : ScannerServicing
+    let verification : VerificationServicing
 
     init(auth: AuthServicing,
          users: UserServicing,
@@ -39,7 +40,8 @@ final class ServiceContainer {
          notifications: NotificationServicing,
          answerWatcher: AnswerWatcher,
          arrivals: ArrivalMonitoring,
-         scanner:ScannerServicing) {
+         scanner:ScannerServicing,
+         verification:VerificationServicing) {
         self.auth = auth
         self.users = users
         self.biometrics = biometrics
@@ -53,6 +55,7 @@ final class ServiceContainer {
         self.answerWatcher = answerWatcher
         self.arrivals = arrivals
         self.scanner = scanner
+        self.verification = verification
     }
 
     /// The real services used when the app runs.
@@ -64,6 +67,7 @@ final class ServiceContainer {
         let requests = FirestoreRequestService()
         let responses = FirestoreResponseService()
         let notifications = NotificationService()
+        
 
         return ServiceContainer(
             auth: auth,
@@ -83,7 +87,8 @@ final class ServiceContainer {
             arrivals: RegionMonitorService(pharmacyService: pharmacies,
                                            locationService: location,
                                            notificationService: notifications),
-            scanner : VisionScannerService()
+            scanner : VisionScannerService(),
+            verification: FirestoreVerificationService()
         )
     }
 

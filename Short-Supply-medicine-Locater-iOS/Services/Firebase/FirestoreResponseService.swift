@@ -35,6 +35,19 @@ final class FirestoreResponseService: ResponseServicing {
         let data = try Firestore.Encoder().encode(response)
         try await collection.document(response.id).setData(data)
     }
+    
+    // MARK: - Pharmacy posts 
+
+    func posts(by responderID: String) async throws -> [AvailabilityResponse] {
+        try await fetch(collection.whereField("responderID", isEqualTo: responderID))
+    }
+
+    /// "Sold out" — the pharmacy expires its own post right now (server time).
+    func closePost(_ responseID: String) async throws {
+        try await collection.document(responseID).updateData([
+            "expiresAt": FieldValue.serverTimestamp()
+        ])
+    }
 
     /// One atomic batch: confirmation + counter + expiry + reputation entries.
     func vote(_ verdict: Confirmation.Verdict,

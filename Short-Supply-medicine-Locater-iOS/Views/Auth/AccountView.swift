@@ -44,6 +44,31 @@ struct AccountView: View {
                      ? "The app locks whenever you leave it."
                      : "Set up Face ID or a passcode in Settings to use app lock.")
             }
+            
+            if let profile = app.profile {
+                Section("Pharmacies") {
+                    switch profile.role {
+                    case .pharmacy:
+                        NavigationLink {
+                            PharmacyDashboardView(viewModel: services.makePharmacyDashboardViewModel(profile: profile))
+                        } label: {
+                            Label("Pharmacy dashboard", systemImage: "cross.case")
+                        }
+                    case .moderator:
+                        NavigationLink {
+                            ModeratorQueueView(viewModel: services.makeModeratorViewModel(moderatorID: profile.id))
+                        } label: {
+                            Label("Verification queue", systemImage: "checkmark.seal")
+                        }
+                    case .member:
+                        NavigationLink {
+                            VerifyPharmacyView(viewModel: services.makeVerifyPharmacyViewModel(profile: profile))
+                        } label: {
+                            Label("I run a pharmacy", systemImage: "building.2")
+                        }
+                    }
+                }
+            }
 
             Section("Account") {
                 if app.isAnonymous {
@@ -64,6 +89,7 @@ struct AccountView: View {
             }
         }
         .navigationTitle("Account")
+        .refreshable { await app.refreshProfile() }
         .task {
             guard let userID = app.authService.currentUserID,
                   let entries = try? await services.reputation.entries(for: userID) else { return }

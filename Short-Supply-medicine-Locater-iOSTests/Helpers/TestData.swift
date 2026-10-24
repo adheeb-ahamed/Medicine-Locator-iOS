@@ -77,4 +77,22 @@ enum TestData {
                  latitude: latitude, longitude: longitude,
                  phone: nil, kind: .retail, isVerified: false)
     }
+    
+    static func profile(id: String = "user-1",
+                        role: UserRole = .member,
+                        email: String? = "ad@example.com",
+                        pharmacyID: String? = nil) -> UserProfile {
+        UserProfile(id: id, role: role, reputation: 0, email: email,
+                    createdAt: t0, pharmacyID: pharmacyID)
+    }
+
+    static func application(id: String = "applicant",
+                            pharmacyID: String = "NMRA-123",
+                            licenceNumber: String = "NMRA-123",
+                            status: VerificationRequest.Status = .pending) -> VerificationRequest {
+        VerificationRequest(id: id, userID: id, pharmacyID: pharmacyID,
+                            pharmacyName: "Test Pharmacy", licenceNumber: licenceNumber,
+                            contactName: "A. Perera", phone: "0771234567",
+                            status: status, createdAt: t0)
+    }
 }

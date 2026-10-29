@@ -61,6 +61,7 @@ struct SettingsView: View {
             }
             #endif
         }
+        .screenBackground()
         .navigationTitle("Settings")
         .confirmationDialog("Clear saved reports?", isPresented: $confirmClear, titleVisibility: .visible) {
             Button("Clear", role: .destructive) { viewModel.clearSavedReports() }

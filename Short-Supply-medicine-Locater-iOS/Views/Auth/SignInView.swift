@@ -2,7 +2,9 @@
 //  SignInView.swift
 //  Short-Supply-medicine-Locater-iOS
 //
-//  Created by COBSCCOMP25.1P-404 on 2026-10-22.
+//
+//  SignInView.swift
+//  Short-Supply-medicine-Locater-iOS
 //
 
 import SwiftUI
@@ -18,6 +20,11 @@ struct SignInView: View {
 
     var body: some View {
         Form {
+            GradientInfoCard(icon: "person.crop.circle.badge.checkmark",
+                             title: "Welcome back",
+                             message: "Sign in to bring your reputation to this phone.")
+                .cardRow()
+
             Section {
                 TextField("Email", text: $viewModel.email)
                     .textContentType(.emailAddress)
@@ -31,6 +38,15 @@ struct SignInView: View {
             MessageSection(error: viewModel.errorMessage, info: viewModel.infoMessage)
 
             Section {
+                NavigationLink("Forgot password?") {
+                    ForgotPasswordView(viewModel: viewModel)
+                }
+                .foregroundStyle(Theme.accent)
+            }
+        }
+        .screenBackground()
+        .safeAreaInset(edge: .bottom) {
+            BottomBar {
                 Button {
                     Task {
                         if await viewModel.signIn() {
@@ -39,13 +55,10 @@ struct SignInView: View {
                         }
                     }
                 } label: {
-                    if viewModel.isWorking { ProgressView() } else { Text("Sign in") }
+                    if viewModel.isWorking { ProgressView().tint(.white) } else { Text("Sign in") }
                 }
+                .buttonStyle(.primaryPill)
                 .disabled(!viewModel.canSignIn)
-
-                NavigationLink("Forgot password?") {
-                    ForgotPasswordView(viewModel: viewModel)
-                }
             }
         }
         .navigationTitle("Sign in")

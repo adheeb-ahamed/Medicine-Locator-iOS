@@ -57,6 +57,7 @@ struct AccountView: View {
                 Text("Deletes your profile, sign-in, search history and saved reports. Your past requests and reports stay anonymous and expire on their own.")
             }
         }
+        .screenBackground()
         .navigationTitle("Account")
         .sheet(item: $activeSheet) { sheet in
             NavigationStack {

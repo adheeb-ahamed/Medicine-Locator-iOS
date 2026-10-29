@@ -2,7 +2,9 @@
 //  CreateAccountView.swift
 //  Short-Supply-medicine-Locater-iOS
 //
-//  Created by COBSCCOMP25.1P-404 on 2026-10-22.
+//
+//  CreateAccountView.swift
+//  Short-Supply-medicine-Locater-iOS
 //
 
 import SwiftUI
@@ -19,6 +21,11 @@ struct CreateAccountView: View {
 
     var body: some View {
         Form {
+            GradientInfoCard(icon: "lock.shield.fill",
+                             title: "Save my reputation",
+                             message: "Your email is only used to sign in and keep your points. It's never shown to anyone.")
+                .cardRow()
+
             Section {
                 TextField("Email", text: $viewModel.email)
                     .textContentType(.emailAddress)
@@ -29,19 +36,21 @@ struct CreateAccountView: View {
                     .textContentType(.newPassword)
                 SecureField("Confirm password", text: $viewModel.confirmPassword)
                     .textContentType(.newPassword)
-            } footer: {
-                Text("Your email is only used to sign in and keep your reputation. It's never shown to anyone.")
             }
 
             if !viewModel.confirmPassword.isEmpty && !viewModel.passwordsMatch {
                 Section {
-                    Text("Passwords don't match.").foregroundStyle(Theme.warning)
+                    Label("Passwords don't match.", systemImage: "exclamationmark.circle.fill")
+                        .foregroundStyle(Theme.warning)
                 }
+                .listRowBackground(Theme.warningTint)
             }
 
             MessageSection(error: viewModel.errorMessage, info: viewModel.infoMessage)
-
-            Section {
+        }
+        .screenBackground()
+        .safeAreaInset(edge: .bottom) {
+            BottomBar {
                 Button {
                     Task {
                         if await viewModel.createAccount() {
@@ -50,8 +59,9 @@ struct CreateAccountView: View {
                         }
                     }
                 } label: {
-                    if viewModel.isWorking { ProgressView() } else { Text("Create account") }
+                    if viewModel.isWorking { ProgressView().tint(.white) } else { Text("Create account") }
                 }
+                .buttonStyle(.primaryPill)
                 .disabled(!viewModel.canCreateAccount)
             }
         }

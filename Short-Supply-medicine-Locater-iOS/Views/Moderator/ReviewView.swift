@@ -88,6 +88,7 @@ struct ReviewView: View {
                 Text(error).font(.footnote).foregroundStyle(Theme.danger)
             }
         }
+        .screenBackground()
         .navigationTitle("Review")
         .navigationBarTitleDisplayMode(.inline)
     }

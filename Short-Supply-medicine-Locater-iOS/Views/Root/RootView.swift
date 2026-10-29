@@ -2,7 +2,9 @@
 //  RootView.swift
 //  Short-Supply-medicine-Locater-iOS
 //
-//  Created by COBSCCOMP25.1P-404 on 2026-10-22.
+//
+//  RootView.swift
+//  Short-Supply-medicine-Locater-iOS
 //
 
 import SwiftUI
@@ -14,7 +16,16 @@ struct RootView: View {
     var body: some View {
         switch app.phase {
         case .loading:
-            ProgressView("Loading…")
+            ZStack {
+                Theme.heroGradient.ignoresSafeArea()
+                VStack(spacing: 14) {
+                    Image(systemName: "cross.case.fill")
+                        .font(.system(size: 44, weight: .semibold))
+                    ProgressView().tint(.white)
+                }
+                .foregroundStyle(.white)
+            }
+            .accessibilityLabel("Loading")
 
         case .onboarding:
             WelcomeView()
@@ -34,9 +45,10 @@ struct RootView: View {
                 Button("Try again") {
                     Task { await app.start() }
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(Theme.accent)
+                .buttonStyle(.primaryPill)
+                .padding(.horizontal, 40)
             }
+            .screenBackground()
         }
     }
 }

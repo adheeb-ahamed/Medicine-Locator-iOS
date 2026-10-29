@@ -87,6 +87,7 @@ struct VerifyPharmacyView: View {
                 }
             }
         }
+        .screenBackground()
         .navigationTitle("Verify your pharmacy")
         .task { await viewModel.load() }
     }

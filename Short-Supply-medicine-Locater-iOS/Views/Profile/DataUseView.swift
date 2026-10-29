@@ -34,6 +34,7 @@ struct DataUseView: View {
                     .font(.footnote)
             }
         }
+        .screenBackground()
         .navigationTitle("What we store")
     }
 

@@ -64,6 +64,7 @@ struct NotificationSettingsView: View {
                 Text("Hides medicine and pharmacy names on your lock screen.")
             }
         }
+        .screenBackground()
         .navigationTitle("Notifications")
         .task { await viewModel.refresh() }
         .onChange(of: scenePhase) { _, phase in

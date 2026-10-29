@@ -30,6 +30,7 @@ struct EmergencyInfoView: View {
                 Text("Never take a medicine that wasn't prescribed for you. Ask your doctor or pharmacist about alternatives if a medicine is out of stock.")
             }
         }
+        .screenBackground()
         .navigationTitle("Emergency help")
     }
 }

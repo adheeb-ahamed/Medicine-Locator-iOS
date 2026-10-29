@@ -2,7 +2,9 @@
 //  ScanView.swift
 //  Short-Supply-medicine-Locater-iOS
 //
-//  Created by COBSCCOMP25.1P-404 on 2026-10-24.
+//
+//  ScanView.swift
+//  Short-Supply-medicine-Locater-iOS
 //
 
 import SwiftUI
@@ -27,38 +29,15 @@ struct ScanView: View {
     }
 
     var body: some View {
-        List {
-            Section {
-                if let previewImage {
-                    Image(uiImage: previewImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 220)
-                        .frame(maxWidth: .infinity)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                } else {
-                    ContentUnavailableView("Scan a medicine box",
-                                           systemImage: "text.viewfinder",
-                                           description: Text("Use a clear photo of the front of the box. The photo is read on this iPhone and never uploaded."))
-                }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                viewfinder
+                sourceButtons
+                result
             }
-
-            Section {
-                // Only show the camera if this device has one (the simulator doesn't).
-                if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                    Button {
-                        showingCamera = true
-                    } label: {
-                        Label("Take photo", systemImage: "camera")
-                    }
-                }
-                PhotosPicker(selection: $photoItem, matching: .images) {
-                    Label("Choose from Photos", systemImage: "photo.on.rectangle")
-                }
-            }
-
-            resultSection
+            .padding(20)
         }
+        .screenBackground()
         .navigationTitle("Scan")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -77,52 +56,116 @@ struct ScanView: View {
         }
     }
 
+    // MARK: - Viewfinder (dark box + coral corners)
+
+    private var viewfinder: some View {
+        ZStack {
+            Color.black.opacity(0.88)
+
+            if let previewImage {
+                Image(uiImage: previewImage)
+                    .resizable()
+                    .scaledToFill()
+                    .accessibilityLabel("Photo of the medicine box")
+            } else {
+                VStack(spacing: 10) {
+                    Image(systemName: "text.viewfinder")
+                        .font(.system(size: 44, weight: .semibold))
+                    Text("Scan a medicine box")
+                        .font(.cardTitle)
+                    Text("Use a clear photo of the front. It's read on this iPhone and never uploaded.")
+                        .font(.footnote)
+                        .opacity(0.8)
+                        .multilineTextAlignment(.center)
+                }
+                .foregroundStyle(.white)
+                .padding(32)
+            }
+
+            CornerBrackets()
+                .stroke(Theme.coral, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+                .padding(18)
+                .accessibilityHidden(true)
+        }
+        .frame(height: 260)
+        .frame(maxWidth: .infinity)
+        .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.card, style: .continuous))
+    }
+
+    // MARK: - Camera / Photos buttons
+
+    private var sourceButtons: some View {
+        VStack(spacing: 12) {
+            // Only show the camera if this device has one (the simulator doesn't).
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button {
+                    showingCamera = true
+                } label: {
+                    Label("Take photo", systemImage: "camera.fill")
+                }
+                .buttonStyle(.primaryPill)
+            }
+            PhotosPicker(selection: $photoItem, matching: .images) {
+                Label("Choose from Photos", systemImage: "photo.on.rectangle")
+            }
+            .buttonStyle(.tealPill)
+        }
+    }
+
+    // MARK: - Result
+
     @ViewBuilder
-    private var resultSection: some View {
+    private var result: some View {
         switch viewModel.state {
         case .idle:
             EmptyView()
 
         case .scanning:
-            Section {
-                HStack(spacing: 12) {
-                    ProgressView()
-                    Text("Reading the box…").foregroundStyle(.secondary)
-                }
+            HStack(spacing: 12) {
+                ProgressView()
+                Text("Reading the box…").foregroundStyle(.secondary)
             }
+            .cardStyle()
 
         case .found(let suggestion):
-            Section {
-                ForEach(suggestion.names, id: \.self) { name in
-                    Button {
-                        onPick(name, suggestion.strength)
-                        dismiss()
-                    } label: {
-                        HStack {
-                            Text(name).font(.body.weight(.medium))
+            Text("Is it one of these?").font(.sectionTitle)
+
+            ForEach(suggestion.names, id: \.self) { name in
+                Button {
+                    onPick(name, suggestion.strength)
+                    dismiss()
+                } label: {
+                    HStack(spacing: 12) {
+                        IconTile(systemImage: "pills.fill")
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(name).font(.cardTitle)
                             if let strength = suggestion.strength {
-                                Text(strength).foregroundStyle(.secondary)
+                                Text(strength).font(.caption).foregroundStyle(.secondary)
                             }
-                            Spacer()
-                            Image(systemName: "arrow.right.circle")
-                                .foregroundStyle(Theme.accent)
                         }
+                        Spacer()
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(Theme.accent)
                     }
-                    .foregroundStyle(.primary)
+                    .cardStyle(padding: 14)
                 }
-            } header: {
-                Text("Is it one of these?")
-            } footer: {
-                if let barcode = suggestion.barcode {
-                    Text("Barcode \(barcode) detected. Barcode lookup isn't available yet, so choose the name above.")
-                }
+                .buttonStyle(.plain)
+            }
+
+            if let barcode = suggestion.barcode {
+                Text("Barcode \(barcode) detected. Barcode lookup isn't available yet, so choose the name above.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
 
         case .failed(let message):
-            Section {
-                Label(message, systemImage: "exclamationmark.triangle")
-                    .foregroundStyle(Theme.warning)
-            }
+            Label(message, systemImage: "exclamationmark.triangle.fill")
+                .foregroundStyle(Theme.warning)
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Theme.warningTint,
+                            in: RoundedRectangle(cornerRadius: Theme.Radius.card, style: .continuous))
         }
     }
 

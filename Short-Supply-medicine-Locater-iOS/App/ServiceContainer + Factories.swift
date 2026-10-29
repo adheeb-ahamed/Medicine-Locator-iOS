@@ -116,4 +116,8 @@ extension ServiceContainer {
     func makeMapViewModel() -> MapViewModel {
         MapViewModel(pharmacyService: pharmacies)
     }
+
+    func makeMapViewModel() -> MapViewModel {
+        MapViewModel(pharmacyService: pharmacies, locationService: location)
+    }
 }

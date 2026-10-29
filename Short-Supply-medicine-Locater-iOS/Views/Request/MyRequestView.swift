@@ -73,9 +73,13 @@ struct MyRequestsView: View {
                 } description: {
                     Text("Ask people nearby to look for a medicine for you.")
                 } actions: {
-                    Button("New request") { showingNewRequest = true }
-                        .buttonStyle(.primaryPill)
-                        .padding(.horizontal, 40)
+                    Button {
+                        showingNewRequest = true
+                    } label: {
+                        Label("New request", systemImage: "plus")
+                    }
+                    .buttonStyle(.primaryPill)
+                    .frame(width: 240)
                 }
             }
         }

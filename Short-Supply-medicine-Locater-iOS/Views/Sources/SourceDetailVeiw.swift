@@ -133,12 +133,12 @@ struct SourceDetailView: View {
                     }
                     .buttonStyle(.tealPill)
                 }
-                if let url = URL(string: "https://maps.apple.com/?daddr=\(pharmacy.latitude),\(pharmacy.longitude)") {
-                    Link(destination: url) {
-                        Label("Directions", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
-                    }
-                    .buttonStyle(.tealPill)
+                NavigationLink {
+                    DirectionsView(viewModel: services.makeDirectionsViewModel(to: pharmacy))
+                } label: {
+                    Label("Directions", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
                 }
+                .buttonStyle(.tealPill)
             }
         }
     }

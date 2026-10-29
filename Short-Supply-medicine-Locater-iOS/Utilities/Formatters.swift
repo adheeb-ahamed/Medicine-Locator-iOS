@@ -25,4 +25,11 @@ enum Formatters {
         if minutes < 60 { return "\(minutes)m left" }
         return "\(minutes / 60)h left"
     }
+    
+    /// 300 → "5 min", 5700 → "1 h 35 min"
+    static func duration(_ seconds: TimeInterval) -> String {
+        let minutes = max(1, Int((seconds / 60).rounded()))
+        if minutes < 60 { return "\(minutes) min" }
+        return "\(minutes / 60) h \(minutes % 60) min"
+    }
 }

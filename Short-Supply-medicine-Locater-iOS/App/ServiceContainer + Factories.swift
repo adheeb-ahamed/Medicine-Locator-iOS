@@ -113,11 +113,14 @@ extension ServiceContainer {
                     authService: auth)
     }
 
-    func makeMapViewModel() -> MapViewModel {
-        MapViewModel(pharmacyService: pharmacies)
-    }
 
     func makeMapViewModel() -> MapViewModel {
         MapViewModel(pharmacyService: pharmacies, locationService: location)
+    }
+    
+    func makeDirectionsViewModel(to pharmacy: Pharmacy) -> DirectionsViewModel {
+        DirectionsViewModel(pharmacy: pharmacy,
+                            routeService: MapKitRouteService(),   // stateless, so a new one is fine
+                            locationService: location)
     }
 }

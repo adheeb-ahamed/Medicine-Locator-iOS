@@ -36,6 +36,14 @@ struct HeroHeader<Content: View>: View {
         .padding(.bottom, 32)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(background)
+        .background(alignment: .top) {
+            // Fill the status-bar area above the hero with the gradient's top colour.
+            // (.ignoresSafeArea can't reach there when the hero is inside a ScrollView.)
+            Theme.heroTop
+                .frame(height: 400)
+                .offset(y: -400)          // sits directly ABOVE the hero, touching its top edge
+                .accessibilityHidden(true)
+        }
     }
 
     private var shape: UnevenRoundedRectangle {

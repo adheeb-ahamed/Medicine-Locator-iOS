@@ -23,6 +23,7 @@ struct PillButtonStyle: ButtonStyle {
             configuration.label
                 .font(.buttonLabel)
                 .foregroundStyle(.white)
+                .padding(.horizontal, 24)
                 .frame(maxWidth: .infinity, minHeight: Theme.buttonHeight)
                 .background(isEnabled ? color : Theme.tertiary, in: Capsule())
                 .scaleEffect(configuration.isPressed ? 0.97 : 1)          // press feedback

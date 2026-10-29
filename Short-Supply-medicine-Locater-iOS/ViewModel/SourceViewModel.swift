@@ -32,6 +32,8 @@ final class SourcesViewModel {
 
     private let connectivity: ConnectivityServicing?
     private let cache: SourceCacheServicing?
+    
+    var resultCount: Int { cached.isEmpty ? sources.count : cached.count }
 
     init(scope: Scope,
              responseService: ResponseServicing,
@@ -66,8 +68,10 @@ final class SourcesViewModel {
             return
         }
         isOffline = false
+        
         /// How many results the user can see right now (live, or saved when offline).
-        var resultCount: Int { cached.isEmpty ? sources.count : cached.count }
+
+        
 
         do {
             let responses: [AvailabilityResponse]

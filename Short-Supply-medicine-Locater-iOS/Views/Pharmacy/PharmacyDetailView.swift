@@ -7,8 +7,14 @@ import SwiftUI
 
 /// Details for one pharmacy: header, facts card, Directions / Call.
 struct PharmacyDetailView: View {
+    @Environment(ServiceContainer.self) private var services
+    
     let pharmacy: Pharmacy
     var distance: Double? = nil
+    /// When opened from the Map tab, Directions draws on that map instead of opening a new screen.
+    var onDirections: (() -> Void)? = nil
+    
+    
 
     var body: some View {
         ScrollView {
@@ -78,12 +84,20 @@ struct PharmacyDetailView: View {
 
     private var actionButtons: some View {
         HStack(spacing: 12) {
-            if let url = directionsURL {
-                Link(destination: url) {
+            if let onDirections {
+                Button(action: onDirections) {
+                    Label("Directions", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
+                }
+                .buttonStyle(.tealPill)
+            } else {
+                NavigationLink {
+                    DirectionsView(viewModel: services.makeDirectionsViewModel(to: pharmacy))
+                } label: {
                     Label("Directions", systemImage: "arrow.triangle.turn.up.right.diamond.fill")
                 }
                 .buttonStyle(.tealPill)
             }
+
             if let phone = pharmacy.phone, let url = phoneURL(phone) {
                 Link(destination: url) {
                     Label("Call", systemImage: "phone.fill")
@@ -93,10 +107,6 @@ struct PharmacyDetailView: View {
         }
     }
 
-    /// Opens Apple Maps with directions to the pharmacy.
-    private var directionsURL: URL? {
-        URL(string: "https://maps.apple.com/?daddr=\(pharmacy.latitude),\(pharmacy.longitude)")
-    }
 
     /// "tel:" link that starts a phone call (digits and + only).
     private func phoneURL(_ phone: String) -> URL? {

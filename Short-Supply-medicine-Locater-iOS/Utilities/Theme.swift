@@ -43,10 +43,11 @@ enum Theme {
     static let tertiary    = Color(light: 0x8A8A8E, dark: 0x98989F)
 
     // MARK: - Hero gradient (a little darker at night so it doesn't glare)
+    static let heroTop    = Color(light: 0x0E8C88, dark: 0x0B6C69)   // also fills the status-bar area
+    static let heroBottom = Color(light: 0x054845, dark: 0x043937)
+
     static var heroGradient: LinearGradient {
-        LinearGradient(colors: [Color(light: 0x0E8C88, dark: 0x0B6C69),
-                                Color(light: 0x054845, dark: 0x043937)],
-                       startPoint: .top, endPoint: .bottom)
+        LinearGradient(colors: [heroTop, heroBottom], startPoint: .top, endPoint: .bottom)
     }
 
     // MARK: - Shape

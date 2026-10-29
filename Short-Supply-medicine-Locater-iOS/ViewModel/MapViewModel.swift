@@ -57,12 +57,24 @@ final class MapViewModel {
     }
 
     /// Pins on the map. Recalculated automatically when the text, chip or data change.
+    /// Pins on the map.
+    /// With location on and no search text → only pharmacies within 10 km (nearest area).
+    /// Typing a name searches ALL pharmacies, so you can still find one in another city.
     var visiblePharmacies: [Pharmacy] {
-        let matched = PharmacyFinder.matching(filterText, in: pharmacies)
+        var list = PharmacyFinder.matching(filterText, in: pharmacies)
+
+        let isSearching = !filterText.trimmingCharacters(in: .whitespaces).isEmpty
+        if let userLocation, !isSearching {
+            let nearby = list.filter {
+                $0.distance(from: userLocation) <= Constants.Location.nearbyRadius
+            }
+            if !nearby.isEmpty { list = nearby }     // nothing nearby? fall back to all
+        }
+
         switch filter {
-        case .all:       return matched
-        case .hospitals: return matched.filter { $0.kind == .hospital }
-        case .verified:  return matched.filter(\.isVerified)
+        case .all:       return list
+        case .hospitals: return list.filter { $0.kind == .hospital }
+        case .verified:  return list.filter(\.isVerified)
         }
     }
 

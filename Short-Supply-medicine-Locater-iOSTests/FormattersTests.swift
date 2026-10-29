@@ -6,6 +6,8 @@
 //
 
 import Testing
+import Foundation
+
 @testable import Short_Supply_medicine_Locater_iOS
 
 struct FormattersTests {
@@ -20,5 +22,11 @@ struct FormattersTests {
     #expect(Formatters.timeLeft(until: now + 35 * 60, from: now) == "35m left")
     #expect(Formatters.timeLeft(until: now + 4 * 3600 + 120, from: now) == "4h left")
     #expect(Formatters.timeLeft(until: now - 60, from: now) == "Expired")
+    }
+    
+    @Test func durationText() {
+        #expect(Formatters.duration(30) == "1 min")
+        #expect(Formatters.duration(25 * 60) == "25 min")
+        #expect(Formatters.duration(95 * 60) == "1 h 35 min")
     }
 }

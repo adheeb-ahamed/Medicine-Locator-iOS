@@ -2,27 +2,22 @@
 //  PharmacyMapView.swift
 //  Short-Supply-medicine-Locater-iOS
 //
-//  Created by COBSCCOMP25.1P-404 on 2026-10-23.
-//
-
-//
-//  PharmacyMapView.swift
-//  Short-Supply-medicine-Locater-iOS
-//
 
 import SwiftUI
 import MapKit
 
-/// All licensed pharmacies on a map (AF1: MapKit) with filter chips and a card carousel.
-/// Pin ↔ card stay in sync: tap a pin → its card scrolls in; swipe a card → its pin is selected.
+/// Licensed pharmacies near me (AF1: MapKit) with filter chips and a card carousel.
+/// Tapping Directions draws the route on THIS map — no second map.
 struct PharmacyMapView: View {
+    @Environment(ServiceContainer.self) private var services
     @State private var viewModel: MapViewModel
-    @State private var position: MapCameraPosition = .userLocation(fallback: .region(Self.colombo))
-    @State private var selectedID: String?        // selected pin
-    @State private var carouselID: String?        // card currently centred in the carousel
-    @State private var detailPharmacy: Pharmacy?  // sheet
+    @State private var position: MapCameraPosition = .region(Self.colombo)
+    @State private var selectedID: String?               // selected pin
+    @State private var carouselID: String?               // centred card
+    @State private var detailPharmacy: Pharmacy?         // details sheet
+    @State private var directions: DirectionsViewModel?  // not nil = route mode
 
-    /// Shown if we don't have the user's location.
+    /// Shown until we know where the user is.
     static let colombo = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 6.9271, longitude: 79.8612),
         span: MKCoordinateSpan(latitudeDelta: 0.15, longitudeDelta: 0.15)
@@ -36,12 +31,19 @@ struct PharmacyMapView: View {
         Map(position: $position, selection: $selectedID) {
             UserAnnotation()
 
-            ForEach(viewModel.visiblePharmacies) { pharmacy in
+            // Normal mode: all nearby pins. Route mode: only the destination (from RouteOverlay).
+            ForEach(directions == nil ? viewModel.visiblePharmacies : []) { pharmacy in
                 Annotation(pharmacy.name, coordinate: pharmacy.coordinate) {
                     PharmacyPin(pharmacy: pharmacy, isSelected: selectedID == pharmacy.id)
                 }
-                .annotationTitles(.hidden)        // the carousel shows names instead
+                .annotationTitles(.hidden)
                 .tag(pharmacy.id)
+            }
+
+            if let directions {
+                RouteOverlay(pharmacy: directions.pharmacy,
+                             route: directions.route,
+                             straightLineFrom: directions.isStraightLine ? directions.userCoordinate : nil)
             }
         }
         .mapControls {
@@ -49,8 +51,18 @@ struct PharmacyMapView: View {
             MapCompass()
             MapScaleView()
         }
-        .safeAreaInset(edge: .top) { filterChips }
-        .safeAreaInset(edge: .bottom) { carousel }
+        .safeAreaInset(edge: .top) {
+            if directions == nil { filterChips }
+        }
+        .safeAreaInset(edge: .bottom) {
+            if let directions {
+                DirectionsCard(viewModel: directions,
+                               onClose: endDirections,
+                               onRouteUpdated: fitRoute)
+            } else {
+                carousel
+            }
+        }
         .searchable(text: $viewModel.filterText, prompt: "Filter by name or district")
         .navigationTitle("Pharmacies")
         .navigationBarTitleDisplayMode(.inline)
@@ -62,11 +74,17 @@ struct PharmacyMapView: View {
         }
         .sheet(item: $detailPharmacy) { pharmacy in
             NavigationStack {
-                PharmacyDetailView(pharmacy: pharmacy, distance: viewModel.distance(to: pharmacy))
+                PharmacyDetailView(pharmacy: pharmacy,
+                                   distance: viewModel.distance(to: pharmacy)) {
+                    startDirections(to: pharmacy)       // Directions → this map
+                }
             }
             .presentationDetents([.medium, .large])
         }
-        .task { await viewModel.load() }
+        .task {
+            await viewModel.load()
+            zoomToUser()
+        }
     }
 
     // MARK: - Filter chips
@@ -95,6 +113,7 @@ struct PharmacyMapView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
+        .fixedSize(horizontal: false, vertical: true)   // only as tall as the chips
     }
 
     // MARK: - Carousel
@@ -114,17 +133,52 @@ struct PharmacyMapView: View {
                     .id(pharmacy.id)
                 }
             }
-            .scrollTargetLayout()               // each card is a "snap" point
+            .scrollTargetLayout()
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
         }
-        .scrollTargetBehavior(.viewAligned)     // swipe snaps card by card
-        .scrollPosition(id: $carouselID)        // tells us which card is centred
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $carouselID)
+        .fixedSize(horizontal: false, vertical: true)   // THE ZOOM FIX: only as tall as the cards
+    }
+
+    // MARK: - Camera
+
+    /// About 4 km around me.
+    private func zoomToUser() {
+        guard let here = viewModel.userLocation else { return }
+        withAnimation {
+            position = .region(MKCoordinateRegion(center: here.coordinate,
+                                                  latitudinalMeters: 4000,
+                                                  longitudinalMeters: 4000))
+        }
+    }
+
+    /// Fit me + pharmacy + route on screen.
+    private func fitRoute() {
+        withAnimation { position = .automatic }
+    }
+
+    // MARK: - Directions on this map
+
+    private func startDirections(to pharmacy: Pharmacy) {
+        detailPharmacy = nil                 // close the sheet
+        selectedID = nil
+        let route = services.makeDirectionsViewModel(to: pharmacy)
+        directions = route
+        Task {
+            await route.load()
+            fitRoute()
+        }
+    }
+
+    private func endDirections() {
+        directions = nil
+        zoomToUser()
     }
 
     // MARK: - Sync pin ↔ card
 
-    /// Pin tapped: scroll its card into view, or open details if it isn't in the carousel.
     private func pinSelected(_ id: String?) {
         guard let id else { return }
         if viewModel.carouselPharmacies.contains(where: { $0.id == id }) {
@@ -134,7 +188,6 @@ struct PharmacyMapView: View {
         }
     }
 
-    /// Card swiped: select its pin and move the map to it.
     private func cardScrolled(to id: String?) {
         guard let id, let pharmacy = viewModel.pharmacy(withID: id) else { return }
         selectedID = id

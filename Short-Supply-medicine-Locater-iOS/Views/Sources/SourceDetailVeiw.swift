@@ -39,7 +39,7 @@ struct SourceDetailView: View {
 
                     OnSiteConfirmView(viewModel: services.makeOnSiteConfirmViewModel(
                         response: response, pharmacy: pharmacy))
-                        .cardStyle()                // restyled properly in UI-6
+                    
 
                     Text("Always call the pharmacy before travelling. Stock can change quickly.")
                         .font(.footnote)

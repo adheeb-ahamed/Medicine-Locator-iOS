@@ -5,10 +5,15 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-24.
 //
 
+//
+//  HelpFeedView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 import UIKit
 
-/// Other people's open requests near me.
+/// Other people's open requests near me — hero + request cards.
 struct HelpFeedView: View {
     @Environment(ServiceContainer.self) private var services
     @Environment(\.openURL) private var openURL
@@ -18,63 +23,88 @@ struct HelpFeedView: View {
         _viewModel = State(initialValue: viewModel)
     }
 
-    var body: some View {
-        List {
-            switch viewModel.locationState {
-            case .unknown:
-                Section {
-                    Text("Turn on location to see what people near you are looking for.")
-                    Button("Use my location") {
-                        Task { await viewModel.enableLocation() }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(Theme.accent)
-                }
-            case .denied:
-                Section {
-                    Text("Location is off, so we can't show nearby requests.")
-                        .foregroundStyle(.secondary)
-                    Button("Open Settings") {
-                        if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
-                    }
-                }
-            case .available:
-                Section {
-                    ForEach(viewModel.nearby) { item in
-                        NavigationLink {
-                            RespondView(viewModel: services.makeRespondViewModel(for: item.request))
-                        } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(item.request.medicine.displayName)
-                                    .font(.body.weight(.medium))
-                                HStack {
-                                    Label(item.request.areaName, systemImage: "mappin.and.ellipse")
-                                    Spacer()
-                                    Text("~\(Formatters.distance(item.distance))")
-                                }
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                } footer: {
-                    Text("Only answer if you've seen it in stock or confirmed with the pharmacy.")
-                }
-            }
+    private var heroTitle: String {
+        guard viewModel.locationState == .available else { return "Help people nearby" }
+        switch viewModel.nearby.count {
+        case 0:  return "No requests nearby"
+        case 1:  return "1 person needs help"
+        default: return "\(viewModel.nearby.count) people need help"
+        }
+    }
 
-            if let error = viewModel.errorMessage {
-                Text(error).font(.footnote).foregroundStyle(Theme.danger)
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                HeroHeader(title: heroTitle,
+                           subtitle: "Tell them which licensed pharmacy has their medicine.")
+
+                VStack(alignment: .leading, spacing: 14) {
+                    content
+
+                    if let error = viewModel.errorMessage {
+                        Text(error).font(.footnote).foregroundStyle(Theme.danger)
+                    }
+                }
+                .padding(20)
             }
         }
-        .overlay {
-            if viewModel.locationState == .available && viewModel.nearby.isEmpty && !viewModel.isLoading {
+        .screenBackground()
+        .navigationTitle("Help nearby")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(.hidden, for: .navigationBar)   // gradient shows through
+        .toolbarColorScheme(.dark, for: .navigationBar)    // white title + back button on teal
+        .task { await viewModel.load() }
+        .refreshable { await viewModel.load() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch viewModel.locationState {
+        case .unknown:
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Turn on location to see what people near you are looking for.")
+                Button("Use my location") {
+                    Task { await viewModel.enableLocation() }
+                }
+                .buttonStyle(.tealPill)
+            }
+            .cardStyle()
+
+        case .denied:
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Location is off, so we can't show nearby requests.")
+                    .foregroundStyle(.secondary)
+                Button("Open Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                }
+                .buttonStyle(.tealPill)
+            }
+            .cardStyle()
+
+        case .available:
+            if viewModel.isLoading && viewModel.nearby.isEmpty {
+                ProgressView().frame(maxWidth: .infinity)
+            } else if viewModel.nearby.isEmpty {
                 ContentUnavailableView("No requests nearby",
                                        systemImage: "hand.raised",
                                        description: Text("When someone near you needs a medicine, it shows here."))
+                    .cardStyle()
+            }
+
+            ForEach(viewModel.nearby) { item in
+                NavigationLink {
+                    RespondView(viewModel: services.makeRespondViewModel(for: item.request))
+                } label: {
+                    HelpRequestCard(item: item)
+                }
+                .buttonStyle(.plain)
+            }
+
+            if !viewModel.nearby.isEmpty {
+                Text("Only answer if you've seen it in stock or confirmed with the pharmacy.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
         }
-        .navigationTitle("Help nearby")
-        .task { await viewModel.load() }
-        .refreshable { await viewModel.load() }
     }
 }

@@ -5,45 +5,33 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-23.
 //
 
+//
+//  RequestPostedView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
-/// Confirmation after posting.
+/// Confirmation after posting — uses the shared SuccessView.
 struct RequestPostedView: View {
     let request: MedicineRequest
     let onDone: () -> Void
 
     var body: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 64))
-                .foregroundStyle(Theme.success)
-
-            Text("Request posted")
-                .font(.title.bold())
-
-            Text("People in \(request.areaName) can now tell you which licensed pharmacy has \(request.medicine.displayName).")
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-
+        SuccessView(icon: "megaphone.fill",
+                    title: "Request posted",
+                    message: "People in \(request.areaName) can now tell you which licensed pharmacy has \(request.medicine.displayName).",
+                    onDone: onDone) {
             VStack(alignment: .leading, spacing: 12) {
-                Label("Answers appear in My Requests", systemImage: "tray.full")
+                Label("Answers appear in My Requests", systemImage: "tray.full.fill")
                 Label("Reports from people at the pharmacy are marked", systemImage: "location.fill")
                 Label("Expires \(request.expiresAt.formatted(date: .abbreviated, time: .omitted)) — you can renew it",
-                      systemImage: "clock")
+                      systemImage: "clock.fill")
             }
-            .font(.subheadline)
-
-            Spacer()
-
-            Button(action: onDone) {
-                Text("Done").frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(Theme.accent)
-            .controlSize(.large)
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(Theme.accent)
         }
-        .padding(24)
         .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .navigationBar)
     }
 }

@@ -5,9 +5,14 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-23.
 //
 
+//
+//  SourceListView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
-/// A List section of ranked reports. Used by Search and Request detail.
+/// A List section of ranked reports, shown as cards. Used by Search and Request detail.
 struct SourcesListView: View {
     let viewModel: SourcesViewModel          // owned by the parent screen
     let emptyMessage: String
@@ -16,18 +21,20 @@ struct SourcesListView: View {
         Section {
             if viewModel.isLoading && !viewModel.hasLoaded {
                 ProgressView()
+                    .frame(maxWidth: .infinity)
+                    .cardRow()
             } else if viewModel.isOffline || !viewModel.cached.isEmpty {
                 // Offline (or network failed): show saved results
                 if viewModel.cached.isEmpty {
-                    Text("You're offline and nothing was saved for this yet.")
-                        .foregroundStyle(.secondary)
+                    message("You're offline and nothing was saved for this yet.")
                 }
                 ForEach(viewModel.cached) { snapshot in
                     CachedSourceRow(snapshot: snapshot)
+                        .cardRow()
                 }
             } else {
                 if viewModel.sources.isEmpty {
-                    Text(emptyMessage).foregroundStyle(.secondary)
+                    message(emptyMessage)
                 }
                 ForEach(viewModel.sources) { source in
                     NavigationLink {
@@ -35,19 +42,34 @@ struct SourcesListView: View {
                     } label: {
                         SourceRow(source: source)
                     }
+                    .navigationLinkIndicatorVisibility(.hidden)   // the card has its own chevron
+                    .cardRow()
                 }
             }
 
             if let error = viewModel.errorMessage {
-                Text(error).font(.footnote).foregroundStyle(Theme.danger)
+                Text(error)
+                    .font(.footnote)
+                    .foregroundStyle(Theme.danger)
+                    .cardRow()
             }
-        }  header: {
+        } header: {
             Text("Where people have seen it")
+                .font(.sectionTitle)
+                .foregroundStyle(.primary)
+                .textCase(nil)
         } footer: {
             Text("Confidence depends on who reported it, whether they were at the pharmacy, and how recent it is.")
         }
         .task(id: ObjectIdentifier(viewModel)) {
             await viewModel.load()
         }
+    }
+
+    private func message(_ text: String) -> some View {
+        Text(text)
+            .foregroundStyle(.secondary)
+            .cardStyle()
+            .cardRow()
     }
 }

@@ -16,4 +16,13 @@ enum Formatters {
         }
         return String(format: "%.1f km", meters / 1000)
     }
+
+        /// Time until a report disappears: "35m left", "4h left", "Expired".
+    /// `now` is a parameter so tests can use a fixed time.
+    static func timeLeft(until date: Date, from now: Date = .now) -> String {
+        let minutes = Int(date.timeIntervalSince(now) / 60)
+        if minutes <= 0 { return "Expired" }
+        if minutes < 60 { return "\(minutes)m left" }
+        return "\(minutes / 60)h left"
+    }
 }

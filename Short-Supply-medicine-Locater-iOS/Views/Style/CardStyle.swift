@@ -31,4 +31,12 @@ struct ScreenBackground: ViewModifier {
 extension View {
     func cardStyle(padding: CGFloat = 16) -> some View { modifier(CardStyle(padding: padding)) }
     func screenBackground() -> some View { modifier(ScreenBackground()) }
+
+        /// Makes a List row look like a floating card: no grey row, no separator, small gaps.
+    func cardRow() -> some View {
+        self
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+    }
 }

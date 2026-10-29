@@ -14,4 +14,11 @@ struct FormattersTests {
     func distanceText(meters: Double, expected: String) {
         #expect(Formatters.distance(meters) == expected)
     }
+
+    @Test func timeLeftText() {
+    let now = Date(timeIntervalSince1970: 0)
+    #expect(Formatters.timeLeft(until: now + 35 * 60, from: now) == "35m left")
+    #expect(Formatters.timeLeft(until: now + 4 * 3600 + 120, from: now) == "4h left")
+    #expect(Formatters.timeLeft(until: now - 60, from: now) == "Expired")
+    }
 }

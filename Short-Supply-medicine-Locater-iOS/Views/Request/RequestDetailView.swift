@@ -55,6 +55,7 @@ struct RequestDetailView: View {
                 }
             }
         }
+        .screenBackground()
         .navigationTitle(request.medicine.name)
         .navigationBarTitleDisplayMode(.inline)
         .refreshable { await sources.load() }

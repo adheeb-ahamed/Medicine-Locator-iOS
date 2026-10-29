@@ -5,38 +5,45 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-23.
 //
 
+//
+//  SourceRow.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
-/// One report: pharmacy, confidence badge, how it was reported, how long ago.
+/// One report as a card: ring (trust) · pharmacy + tag · time left.
 struct SourceRow: View {
     let source: ScoredResponse
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(source.response.pharmacyName)
-                    .font(.body.weight(.medium))
-                Spacer()
-                ConfidenceBadge(level: source.level)
-            }
-            HStack(spacing: 8) {
-                if source.response.source == .verifiedPharmacy {
-                    Label("From the pharmacy", systemImage: "checkmark.seal.fill")
-                        .font(.caption)
-                        .foregroundStyle(Theme.success)
-                } else if source.response.wasOnSite {
-                    Label("Seen on-site", systemImage: "location.fill")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else {
-                    NotConfirmedLabel()
-                }
-                Spacer()
-                Text(source.response.createdAt, format: .relative(presentation: .named))
+        let response = source.response
+
+        HStack(spacing: 14) {
+            ConfidenceRing(score: source.score, size: 56, showsLevel: true)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(response.pharmacyName)
+                    .font(.cardTitle)
+                    .lineLimit(2)
+                SourceTag(response: response)
+                Text("Reported \(response.createdAt.formatted(.relative(presentation: .named)))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            Spacer(minLength: 8)
+
+            VStack(alignment: .trailing, spacing: 2) {
+                Text(Formatters.timeLeft(until: response.expiresAt))
+                    .font(.system(.subheadline, design: .rounded, weight: .black))
+                    .foregroundStyle(Theme.accent)
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.tertiary)
+            }
         }
+        .cardStyle()
         .accessibilityElement(children: .combine)
     }
 }

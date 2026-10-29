@@ -16,18 +16,12 @@ struct ConfidenceBadge: View {
             .font(.caption.weight(.semibold))
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
-            .foregroundStyle(color)
-            .background(color.opacity(0.12), in: Capsule())
             .accessibilityLabel("\(level.label) confidence")
+            .foregroundStyle(level.color)
+            .background(level.tint, in: Capsule())
     }
 
-    private var color: Color {
-        switch level {
-        case .high:   Theme.success
-        case .medium: Theme.warning
-        case .low, .hidden: Theme.tertiary
-        }
-    }
+
 
     private var symbol: String {
         switch level {

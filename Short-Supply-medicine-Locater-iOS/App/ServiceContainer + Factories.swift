@@ -107,7 +107,10 @@ extension ServiceContainer {
     }
     
     func makeHomeViewModel() -> HomeViewModel {
-            HomeViewModel(pharmacyService: pharmacies, locationService: location)
+    HomeViewModel(pharmacyService: pharmacies,
+                    locationService: location,
+                    requestService: requests,
+                    authService: auth)
     }
 
     func makeMapViewModel() -> MapViewModel {

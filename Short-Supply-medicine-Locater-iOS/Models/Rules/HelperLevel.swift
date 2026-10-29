@@ -44,4 +44,38 @@ enum HelperLevel: Int, CaseIterable {
     static func pointsToNext(for reputation: Int) -> Int? {
         HelperLevel(reputation: reputation).next.map { $0.rawValue - reputation }
     }
+    
+    /// Icon on the journey ladder.
+    var systemImage: String {
+        switch self {
+        case .newcomer: "leaf.fill"
+        case .helper:   "hand.raised.fill"
+        case .trusted:  "checkmark.shield.fill"
+        case .champion: "star.circle.fill"
+        }
+    }
+
+    /// One short line under each level on the ladder.
+    var meaning: String {
+        switch self {
+        case .newcomer: "Everyone starts here."
+        case .helper:   "You've started confirming stock for others."
+        case .trusted:  "Your on-site checks help many people."
+        case .champion: "One of the most active helpers in your area."
+        }
+    }
+
+    /// Where a level sits on MY journey.
+    enum Status: Equatable {
+        case reached    // below my level — already done
+        case current    // my level now
+        case locked     // above my level — still to climb
+    }
+
+    /// e.g. with 60 points: Newcomer = reached, Helper = current, Trusted = locked
+    func status(for reputation: Int) -> Status {
+        let mine = HelperLevel(reputation: reputation)
+        if self == mine { return .current }
+        return rawValue < mine.rawValue ? .reached : .locked
+    }
 }

@@ -18,6 +18,7 @@ struct ProfileView: View {
     @Environment(AppViewModel.self) private var app
     @Environment(ServiceContainer.self) private var services
     @State private var viewModel: ProfileViewModel
+    @State private var showingJourney = false   // "Your journey" sheet
 
     init(viewModel: ProfileViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -44,6 +45,10 @@ struct ProfileView: View {
         .refreshable {
             await app.refreshProfile()
             await viewModel.load()
+        }
+        .sheet(isPresented: $showingJourney) {
+            LevelJourneyView(reputation: viewModel.total)
+                .presentationDetents([.medium, .large])    // half screen, can drag to full
         }
     }
 
@@ -73,6 +78,19 @@ struct ProfileView: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white.opacity(0.9))
                 }
+                Spacer(minLength: 0)
+
+                // ⓘ in the corner → opens the level ladder
+                Button {
+                    showingJourney = true
+                } label: {
+                    Image(systemName: "info.circle")
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 44, height: 44)          // Apple's minimum tap size
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel("How levels work")
             }
             .padding(.bottom, 4)
         }

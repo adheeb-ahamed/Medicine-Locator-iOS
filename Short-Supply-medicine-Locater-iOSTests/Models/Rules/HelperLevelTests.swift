@@ -26,4 +26,18 @@ struct HelperLevelTests {
     @Test func pointsToNextLevel() {
         #expect(HelperLevel.pointsToNext(for: 120) == 30)   // 150 − 120
     }
+    
+    @Test func journeyStatusAt60Points() {
+        // 60 points = Helper
+        #expect(HelperLevel.newcomer.status(for: 60) == .reached)
+        #expect(HelperLevel.helper.status(for: 60) == .current)
+        #expect(HelperLevel.trusted.status(for: 60) == .locked)
+        #expect(HelperLevel.champion.status(for: 60) == .locked)
+    }
+
+    @Test func exactlyOnTheBoundaryIsCurrent() {
+        // 150 points = exactly Trusted helper, so it's "current", not "locked"
+        #expect(HelperLevel.trusted.status(for: 150) == .current)
+        #expect(HelperLevel.helper.status(for: 150) == .reached)
+    }
 }

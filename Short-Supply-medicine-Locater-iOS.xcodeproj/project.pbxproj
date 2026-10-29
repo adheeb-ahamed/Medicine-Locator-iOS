@@ -541,6 +541,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Short-Supply-medicine-Locater-iOS/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PillPal;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID keeps your medicine requests private ";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Lets the app remind you to confirm you to confirm stock when you arrive at a pharmacy";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location shows nearby pharmacies and checks you're at a pharmacy before you confirm stock";
@@ -589,6 +590,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Short-Supply-medicine-Locater-iOS/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = PillPal;
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID keeps your medicine requests private ";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Lets the app remind you to confirm you to confirm stock when you arrive at a pharmacy";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location shows nearby pharmacies and checks you're at a pharmacy before you confirm stock";

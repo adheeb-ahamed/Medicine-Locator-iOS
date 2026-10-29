@@ -49,6 +49,8 @@ struct ConfidenceRing: View {
                 Text("\(percent)")
                     .font(.system(size: drawnSize * 0.32, weight: .black, design: .rounded))
                     .foregroundStyle(.primary)
+                    .contentTransition(.numericText(value: Double(percent)))  // 55 → 65 rolls up
+                    .animation(reduceMotion ? nil : .snappy, value: percent)
                 if showsLevel {
                     Text(level.shortLabel)
                         .font(.system(size: drawnSize * 0.14, weight: .heavy, design: .rounded))

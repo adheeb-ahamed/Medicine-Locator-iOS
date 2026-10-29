@@ -22,6 +22,8 @@ struct StatTile: View {
             }
             Text(value)
                 .font(.bigNumber)
+                .contentTransition(.numericText())   // digits roll to the new number
+                .animation(.snappy, value: value)    // the roll needs an animation to play
             Text(label)
                 .font(.caption.weight(.semibold))
                 .opacity(0.85)

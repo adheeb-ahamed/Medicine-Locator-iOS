@@ -140,6 +140,7 @@ struct PharmacyMapView: View {
         .scrollTargetBehavior(.viewAligned)
         .scrollPosition(id: $carouselID)
         .fixedSize(horizontal: false, vertical: true)   // THE ZOOM FIX: only as tall as the cards
+        .sensoryFeedback(.selection, trigger: viewModel.filter)   // light "tick" when a chip changes
     }
 
     // MARK: - Camera

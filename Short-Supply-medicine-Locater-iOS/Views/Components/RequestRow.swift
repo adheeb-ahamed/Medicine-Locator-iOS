@@ -41,6 +41,8 @@ struct RequestRow: View {
                 Text("\(request.responseCount)")
                     .font(.bigNumber)
                     .foregroundStyle(request.responseCount > 0 ? Theme.accent : Theme.tertiary)
+                    .contentTransition(.numericText(value: Double(request.responseCount)))
+                    .animation(.snappy, value: request.responseCount)
                 Text(request.responseCount == 1 ? "answer" : "answers")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)

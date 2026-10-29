@@ -14,6 +14,7 @@ struct SuccessView<Summary: View>: View {
     var buttonTitle = "Done"
     let onDone: () -> Void
     @ViewBuilder var summary: Summary
+    @State private var appeared = false   // flips to true once, when the screen opens
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,6 +44,9 @@ struct SuccessView<Summary: View>: View {
                 .background(.white, in: Circle())
                 .shadow(color: .black.opacity(0.15), radius: 12, y: 6)
                 .accessibilityHidden(true)
+                .accessibilityHidden(true)
+                .symbolEffect(.bounce, value: appeared)      // icon bounces once when it appears
+                .sensoryFeedback(.success, trigger: appeared) // "success" vibration at the same moment
 
             Text(title)
                 .font(.screenTitle)
@@ -68,5 +72,6 @@ struct SuccessView<Summary: View>: View {
                                               style: .continuous))
             .ignoresSafeArea(edges: .top)
         }
+        .onAppear { appeared = true }    // changing the value is what triggers both effects
     }
 }

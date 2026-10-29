@@ -45,6 +45,15 @@ struct OnSiteConfirmView: View {
                 ).post()
             }
         }
+        // Feel the result: success when the vote is saved, error if it failed.
+        // Returning nil = no vibration for the other state changes.
+        .sensoryFeedback(trigger: viewModel.state) { _, newState in
+            switch newState {
+            case .done:   .success
+            case .failed: .error
+            default:      nil
+            }
+        }
     }
 
     @ViewBuilder

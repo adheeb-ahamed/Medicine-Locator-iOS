@@ -43,6 +43,7 @@ struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR struct name
                 .preferredColorScheme(.light)   // redesign is light-only; colours were contrast-checked for light
                 .environment(appViewModel)
         }
+        .preferredColorScheme(.light)   // redesign is light-only; colours were contrast-checked for light
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
             case .active:

@@ -75,7 +75,7 @@ struct OnSiteConfirmView: View {
 
         case .done(let verdict):
             HStack(spacing: 12) {
-                IconTile(systemImage: "checkmark.seal.fill", color: Theme.success, tint: .white)
+                IconTile(systemImage: "checkmark.seal.fill", color: Theme.success, tint: .Theme.card)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\u{201C}\(verdict.label)\u{201D} recorded")
                         .font(.subheadline.weight(.bold))

@@ -55,7 +55,7 @@ struct LockView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                        .background(Theme.danger, in: Capsule())
+                        .background(Theme.dangerFill, in: Capsule())
                 }
 
                 Spacer()

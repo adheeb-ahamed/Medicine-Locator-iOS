@@ -31,3 +31,22 @@ import SwiftUI
     }
     .screenBackground()
 }
+
+#Preview("Design system — Dark") {
+    ScrollView {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Find medicine").font(.screenTitle)
+            HStack(spacing: 16) {
+                ConfidenceRing(score: 0.86, showsLevel: true)
+                ConfidenceRing(score: 0.55, showsLevel: true)
+                ConfidenceRing(score: 0.22, showsLevel: true)
+            }
+            StatTile(value: "2.4 km", label: "away", systemImage: "location.fill", style: .card)
+            Button("Request this medicine") {}.buttonStyle(.primaryPill)
+            Button("Directions") {}.buttonStyle(.tealPill)
+        }
+        .padding()
+    }
+    .screenBackground()
+    .preferredColorScheme(.dark)
+}

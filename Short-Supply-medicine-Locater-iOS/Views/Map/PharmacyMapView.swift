@@ -84,7 +84,7 @@ struct PharmacyMapView: View {
                             .padding(.horizontal, 14)
                             .padding(.vertical, 8)
                             .foregroundStyle(isOn ? .white : Theme.accent)
-                            .background(isOn ? Theme.accent : Theme.card,
+                            .background(isOn ? Theme.accentFill : Theme.card,
                                         in: RoundedRectangle(cornerRadius: Theme.Radius.chip, style: .continuous))
                             .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
                     }

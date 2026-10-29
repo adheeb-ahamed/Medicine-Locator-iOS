@@ -147,15 +147,15 @@ struct RespondView: View {
                     "Location unavailable", "Your report will be marked not confirmed on-site.")
         }
         guard let selected = viewModel.selected else {
-            return ("hand.point.down.fill", Theme.accent, .white, Theme.accentTint,
+            return ("hand.point.down.fill", Theme.accent, .Theme.card, Theme.accentTint,
                     "Choose the pharmacy below", nil)
         }
         if viewModel.isOnSite {
-            return ("location.fill", Theme.success, .white, Theme.successTint,
+            return ("location.fill", Theme.success, .Theme.card, Theme.successTint,
                     "You're at \(selected.pharmacy.name)", "Your report counts as on-site.")
         }
         let away = viewModel.distanceToSelected.map { "You're \(Formatters.distance($0)) away. " } ?? ""
-        return ("location.slash", Theme.warning, .white, Theme.warningTint,
+        return ("location.slash", Theme.warning, .Theme.card, Theme.warningTint,
                 "Not confirmed on-site", away + "Must be within 100 m to count as on-site.")
     }
 

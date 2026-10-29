@@ -33,5 +33,5 @@ struct PillButtonStyle: ButtonStyle {
 
 extension ButtonStyle where Self == PillButtonStyle {
     static var primaryPill: PillButtonStyle { PillButtonStyle() }                     // coral
-    static var tealPill: PillButtonStyle { PillButtonStyle(color: Theme.accent) }
+    static var tealPill: PillButtonStyle { PillButtonStyle(color: Theme.accentFill) }
 }

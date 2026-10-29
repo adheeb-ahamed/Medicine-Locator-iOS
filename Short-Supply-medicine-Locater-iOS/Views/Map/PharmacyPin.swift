@@ -15,6 +15,7 @@ struct PharmacyPin: View {
     @State private var pulse = false
 
     private var color: Color { pharmacy.isVerified ? Theme.success : Theme.accent }
+    private var fill: Color { pharmacy.isVerified ? Theme.successFill : Theme.accentFill }
     private var icon: String { pharmacy.kind == .hospital ? "cross.fill" : "pills.fill" }
 
     var body: some View {
@@ -38,7 +39,7 @@ struct PharmacyPin: View {
                 .font(.system(size: isSelected ? 18 : 13, weight: .bold))
                 .foregroundStyle(isSelected ? .white : color)
                 .frame(width: isSelected ? 44 : 32, height: isSelected ? 44 : 32)
-                .background(isSelected ? color : Theme.card, in: Circle())
+                .background(isSelected ? fill : Theme.card, in: Circle())
                 .overlay(Circle().stroke(color, lineWidth: 3))
                 .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
         }

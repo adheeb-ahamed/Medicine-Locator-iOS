@@ -76,7 +76,7 @@ struct WelcomeView: View {
                 .foregroundStyle(.white)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
-                .background(Theme.coralText, in: Capsule())
+                .background(Theme.coralFill, in: Capsule())
                 .rotationEffect(.degrees(4))
                 .offset(x: -8, y: -14)
         }

@@ -33,7 +33,7 @@ struct HelpNearbyCard: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 7)
-                    .background(Theme.coralText, in: Capsule())   // darker coral: small white text passes AA
+                    .background(Theme.coralFill, in: Capsule())   // darker coral: small white text passes AA
             }
 
             Spacer(minLength: 0)

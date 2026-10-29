@@ -105,7 +105,7 @@ struct PharmacyDashboardView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .foregroundStyle(isOn ? .white : Theme.accent)
-            .background(isOn ? Theme.accent : Theme.accentTint,
+            .background(isOn ? Theme.accentFill : Theme.accentTint,
                         in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         }
         .buttonStyle(.plain)

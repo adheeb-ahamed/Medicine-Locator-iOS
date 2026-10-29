@@ -15,7 +15,7 @@ struct OfflineBanner: View {
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
-            .background(Theme.warning)
+            .background(Theme.warningFill)
             .accessibilityAddTraits(.isHeader)
     }
 }

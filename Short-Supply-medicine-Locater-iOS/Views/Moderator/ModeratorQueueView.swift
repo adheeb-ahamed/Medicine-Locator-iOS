@@ -40,6 +40,7 @@ struct ModeratorQueueView: View {
                                        description: Text("New pharmacy applications appear here."))
             }
         }
+        .screenBackground()
         .navigationTitle("Verification queue")
         .task { await viewModel.load() }
         .refreshable { await viewModel.load() }

@@ -18,4 +18,5 @@ struct RouteInfo {
     let distance: CLLocationDistance     // metres
     let travelTime: TimeInterval         // seconds
     let steps: [String]
+    var attribution: String? = nil      // credit line required by the data provider
 }

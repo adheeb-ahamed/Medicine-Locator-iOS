@@ -155,8 +155,10 @@ struct PharmacyMapView: View {
     }
 
     /// Fit me + pharmacy + route on screen.
+    /// Fit me + pharmacy + route on screen, with a margin.
     private func fitRoute() {
-        withAnimation { position = .automatic }
+        guard let rect = directions?.mapRect else { return }
+        withAnimation { position = .rect(rect) }
     }
 
     // MARK: - Directions on this map

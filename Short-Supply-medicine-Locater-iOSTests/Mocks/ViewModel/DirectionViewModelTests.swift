@@ -65,4 +65,14 @@ struct DirectionsViewModelTests {
         await vm.load()
         #expect(routes.askedWalking == true)
     }
+    
+    @Test func mapRectContainsMeAndThePharmacy() async throws {
+        let (vm, _) = makeSUT()
+        await vm.load()
+        let rect = try #require(vm.mapRect)
+        #expect(rect.contains(MKMapPoint(vm.pharmacy.coordinate)))
+        #expect(rect.contains(MKMapPoint(try #require(vm.userCoordinate))))
+    }
 }
+
+

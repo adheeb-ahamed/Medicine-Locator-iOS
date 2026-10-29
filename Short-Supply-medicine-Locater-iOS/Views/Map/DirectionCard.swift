@@ -78,6 +78,12 @@ struct DirectionsCard: View {
                     }
                     .tint(Theme.accent)
                 }
+                if let attribution = route.attribution {
+                    Text(attribution)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }                                                  
+
 
             case .straightLine(let distance):
                 Label("Road directions aren't available here. Straight-line distance: \(Formatters.distance(distance)).",

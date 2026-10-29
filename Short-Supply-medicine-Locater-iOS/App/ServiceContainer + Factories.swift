@@ -120,7 +120,8 @@ extension ServiceContainer {
     
     func makeDirectionsViewModel(to pharmacy: Pharmacy) -> DirectionsViewModel {
         DirectionsViewModel(pharmacy: pharmacy,
-                            routeService: MapKitRouteService(),   // stateless, so a new one is fine
+                            routeService: FallbackRouteService([MapKitRouteService(),
+                                                                OSRMRouteService()]),
                             locationService: location)
     }
 }

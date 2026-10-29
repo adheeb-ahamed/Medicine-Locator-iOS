@@ -13,6 +13,7 @@
 import Foundation
 import Observation
 import CoreLocation
+import MapKit
 
 /// In-app directions from my location to one pharmacy.
 @MainActor
@@ -51,6 +52,19 @@ final class DirectionsViewModel {
     var needsLocation: Bool {
         if case .locationOff = state { return true }
         return false
+    }
+    
+    /// The area the map should show: me + the pharmacy + the whole route, with a margin.
+    var mapRect: MKMapRect? {
+        guard let from = userCoordinate else { return nil }
+        var rect = route?.polyline.boundingMapRect ?? .null
+        for coordinate in [from, pharmacy.coordinate] {
+            rect = rect.union(MKMapRect(origin: MKMapPoint(coordinate), size: MKMapSize(width: 0, height: 0)))
+        }
+        // 35% margin on each side (at least ~300 m) so pins never sit on the edge.
+        let padX = max(rect.size.width * 0.35, 2000)
+        let padY = max(rect.size.height * 0.35, 2000)
+        return rect.insetBy(dx: -padX, dy: -padY)
     }
 
     func load() async {

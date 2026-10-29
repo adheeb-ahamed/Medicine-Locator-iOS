@@ -50,7 +50,9 @@ struct DirectionsView: View {
     }
 
     /// Zoom so me, the pharmacy and the route all fit.
+    /// Fit me + pharmacy + route on screen, with a margin.
     private func fitRoute() {
-        withAnimation { position = .automatic }
+        guard let rect = viewModel.mapRect else { return }
+        withAnimation { position = .rect(rect) }
     }
 }

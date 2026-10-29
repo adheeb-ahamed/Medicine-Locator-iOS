@@ -32,6 +32,8 @@ final class MyRequestsViewModel {
 
     var active: [MedicineRequest] { requests.filter { $0.effectiveStatus() == .open } }
     var past: [MedicineRequest]   { requests.filter { $0.effectiveStatus() != .open } }
+        /// Total answers on requests I'm still looking for (summary tile).
+    var activeAnswerCount: Int { active.reduce(0) { $0 + $1.responseCount } }
 
     func load() async {
         guard let ownerID = authService.currentUserID else { return }

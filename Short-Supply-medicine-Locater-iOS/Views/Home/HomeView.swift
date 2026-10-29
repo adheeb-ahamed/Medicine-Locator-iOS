@@ -169,7 +169,7 @@ struct HomeView: View {
                                           sources: services.makeSourcesViewModel(
                                               .request(id: request.id, medicineKey: request.medicine.key)))
                     } label: {
-                        HomeRequestCard(request: request)
+                        RequestRow(request: request)
                     }
                     .buttonStyle(.plain)
                 }

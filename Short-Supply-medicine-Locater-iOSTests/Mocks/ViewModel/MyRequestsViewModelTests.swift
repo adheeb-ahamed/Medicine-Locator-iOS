@@ -45,4 +45,12 @@ struct MyRequestsViewModelTests {
         await vm.renew(vm.past[0])
         #expect(vm.active.count == 2)
     }
+
+    @Test func answerCountOnlyCountsActiveRequests() async {
+    let (vm, requests) = makeSUT()
+    requests.stored[0].responseCount = 3   // "active"
+    requests.stored[1].responseCount = 5   // "expired" — must not count
+    await vm.load()
+    #expect(vm.activeAnswerCount == 3)
+    }
 }

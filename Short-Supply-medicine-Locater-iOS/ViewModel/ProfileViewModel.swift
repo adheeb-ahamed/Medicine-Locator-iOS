@@ -24,6 +24,9 @@ final class ProfileViewModel {
     }
 
     var total: Int { ReputationPolicy.total(of: entries) }
+    var level: HelperLevel { HelperLevel(reputation: total) }
+    var levelProgress: Double { HelperLevel.progress(for: total) }
+    var pointsToNextLevel: Int? { HelperLevel.pointsToNext(for: total) }
 
     /// Newest first, last 5.
     var recent: [ReputationEntry] {

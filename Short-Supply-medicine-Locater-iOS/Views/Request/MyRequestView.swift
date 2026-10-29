@@ -5,9 +5,14 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-23.
 //
 
+//
+//  MyRequestView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
-/// The watchlist tab (MVP item 9).
+/// The watchlist tab (MVP item 9) — summary tiles + request cards.
 struct MyRequestsView: View {
     @Environment(ServiceContainer.self) private var services
     @State private var viewModel: MyRequestsViewModel
@@ -20,30 +25,47 @@ struct MyRequestsView: View {
     var body: some View {
         List {
             if viewModel.showNotificationNudge {
-                Section {
-                    PermissionPromptView(
-                        icon: "bell.badge",
-                        title: "Get notified when someone answers",
-                        message: "Notifications are discreet by default — no medicine names on your lock screen.",
-                        buttonTitle: "Turn on notifications") {
-                            Task { await viewModel.enableNotifications() }
-                        }
-                }
+                PermissionPromptView(
+                    icon: "bell.badge.fill",
+                    title: "Get notified when someone answers",
+                    message: "Notifications are discreet by default — no medicine names on your lock screen.",
+                    buttonTitle: "Turn on notifications") {
+                        Task { await viewModel.enableNotifications() }
+                    }
+                    .cardStyle()
+                    .cardRow()
             }
+
             if !viewModel.active.isEmpty {
-                Section("Looking for") {
+                HStack(spacing: 12) {
+                    StatTile(value: "\(viewModel.active.count)", label: "looking for",
+                             systemImage: "magnifyingglass", style: .card)
+                    StatTile(value: "\(viewModel.activeAnswerCount)", label: "answers so far",
+                             systemImage: "bubble.left.and.bubble.right.fill", style: .card)
+                }
+                .cardRow()
+
+                Section {
                     ForEach(viewModel.active) { row(for: $0) }
+                } header: {
+                    sectionHeader("Looking for")
                 }
             }
+
             if !viewModel.past.isEmpty {
-                Section("Past") {
+                Section {
                     ForEach(viewModel.past) { row(for: $0) }
+                } header: {
+                    sectionHeader("Past")
                 }
             }
+
             if let error = viewModel.errorMessage {
                 Text(error).font(.footnote).foregroundStyle(Theme.danger)
+                    .cardRow()
             }
         }
+        .screenBackground()
         .overlay {
             if viewModel.requests.isEmpty && !viewModel.isLoading {
                 ContentUnavailableView {
@@ -52,8 +74,8 @@ struct MyRequestsView: View {
                     Text("Ask people nearby to look for a medicine for you.")
                 } actions: {
                     Button("New request") { showingNewRequest = true }
-                        .buttonStyle(.borderedProminent)
-                        .tint(Theme.accent)
+                        .buttonStyle(.primaryPill)
+                        .padding(.horizontal, 40)
                 }
             }
         }
@@ -76,6 +98,13 @@ struct MyRequestsView: View {
         .refreshable { await viewModel.load() }
     }
 
+    private func sectionHeader(_ title: String) -> some View {
+        Text(title)
+            .font(.sectionTitle)
+            .foregroundStyle(.primary)
+            .textCase(nil)
+    }
+
     private func row(for request: MedicineRequest) -> some View {
         NavigationLink {
             RequestDetailView(request: request,
@@ -85,5 +114,7 @@ struct MyRequestsView: View {
         } label: {
             RequestRow(request: request)
         }
+        .navigationLinkIndicatorVisibility(.hidden)
+        .cardRow()
     }
 }

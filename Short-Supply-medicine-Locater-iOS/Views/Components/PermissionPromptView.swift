@@ -5,6 +5,11 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-24.
 //
 
+//
+//  PermissionPromptView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
 /// Explains WHY before iOS shows its permission popup.
@@ -16,15 +21,16 @@ struct PermissionPromptView: View {
     let action: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label(title, systemImage: icon)
-                .font(.headline)
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 12) {
+                IconTile(systemImage: icon)
+                Text(title).font(.cardTitle)
+            }
             Text(message)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Button(buttonTitle, action: action)
-                .buttonStyle(.borderedProminent)
-                .tint(Theme.accent)
+                .buttonStyle(.tealPill)
         }
         .padding(.vertical, 6)
     }

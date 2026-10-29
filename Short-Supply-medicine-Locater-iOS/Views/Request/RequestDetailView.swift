@@ -5,9 +5,14 @@
 //  Created by COBSCCOMP25.1P-404 on 2026-10-23.
 //
 
+//
+//  RequestDetailView.swift
+//  Short-Supply-medicine-Locater-iOS
+//
+
 import SwiftUI
 
-/// One of my requests: its answers + found / close / renew.
+/// One of my requests: header card, its answers, and found / close / renew buttons.
 struct RequestDetailView: View {
     let request: MedicineRequest
     let myRequests: MyRequestsViewModel
@@ -25,34 +30,37 @@ struct RequestDetailView: View {
         let status = request.effectiveStatus()
 
         List {
-            Section {
-                LabeledContent("Medicine", value: request.medicine.displayName)
-                LabeledContent("Area", value: request.areaName)
-                LabeledContent("Status", value: status.label)
-                LabeledContent(status == .expired ? "Expired" : "Expires") {
-                    Text(request.expiresAt, format: .relative(presentation: .named))
-                }
-            }
+            headerCard(status: status)
+                .cardRow()
 
             SourcesListView(viewModel: sources,
                             emptyMessage: "No answers yet. People in \(request.areaName) can see your request.")
 
+            // Each button in its OWN row — two buttons in one List row would both fire on tap.
             if status == .open {
-                Section {
-                    Button("I found it") { showingFoundOptions = true }
-                        .foregroundStyle(Theme.success)
-                    Button("I don't need it anymore", role: .destructive) {
-                        Task { await myRequests.close(request); dismiss() }
-                    }
+                Button {
+                    showingFoundOptions = true
+                } label: {
+                    Label("I found it", systemImage: "checkmark.seal.fill")
                 }
+                .buttonStyle(.primaryPill)
+                .cardRow()
+
+                Button("I don't need it anymore", role: .destructive) {
+                    Task { await myRequests.close(request); dismiss() }
+                }
+                .frame(maxWidth: .infinity)
+                .cardRow()
             }
 
             if status == .expired || status == .closed {
-                Section {
-                    Button("Ask again for 7 days") {
-                        Task { await myRequests.renew(request); dismiss() }
-                    }
+                Button {
+                    Task { await myRequests.renew(request); dismiss() }
+                } label: {
+                    Label("Ask again for 7 days", systemImage: "arrow.clockwise")
                 }
+                .buttonStyle(.tealPill)
+                .cardRow()
             }
         }
         .screenBackground()
@@ -72,5 +80,32 @@ struct RequestDetailView: View {
             }
             Button("Cancel", role: .cancel) {}
         }
+    }
+
+    private func headerCard(status: MedicineRequest.Status) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 14) {
+                IconTile(systemImage: "pills.fill", size: 52)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(request.medicine.displayName)
+                        .font(.system(.title2, design: .rounded, weight: .black))
+                    StatusChip(status: status)
+                }
+            }
+            Divider()
+            HStack {
+                Label(request.areaName, systemImage: "mappin.and.ellipse")
+                Spacer()
+                Label {
+                    Text("\(status == .expired ? "Expired" : "Expires") \(request.expiresAt, format: .relative(presentation: .named))")
+                } icon: {
+                    Image(systemName: "clock")
+                }
+            }
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+        }
+        .cardStyle()
+        .accessibilityElement(children: .combine)
     }
 }

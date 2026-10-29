@@ -73,4 +73,19 @@ struct RequestsSummaryTests {
         store.clear()
         #expect(store.load() == nil)
     }
+    
+    @Test func sameContentIgnoresTheTime() {
+        let a = RequestsSummary.make(from: [request("a", answers: 1)], now: now)
+        var b = a
+        b.updatedAt = now + .hours(1)                 // only the time changed
+        #expect(a.hasSameContent(as: b))              // → don't refresh the widget
+    }
+
+    @Test func newAnswerIsAChange() {
+        let a = RequestsSummary.make(from: [request("a", answers: 1)], now: now)
+        var b = a
+        b.answerCount = 2
+        #expect(!a.hasSameContent(as: b))             // → refresh the widget
+        #expect(!a.hasSameContent(as: nil))           // nothing saved before → refresh
+    }
 }

@@ -22,15 +22,14 @@ struct RequestsSummary: Codable, Equatable {
     var medicineNames: [String]   // e.g. ["Imatinib 400 mg"]
     var updatedAt: Date           // when this was saved
 
-    /// Build from the full list — only OPEN (not found / closed / expired) requests count.
-    static func make(from requests: [MedicineRequest], now: Date = .now) -> RequestsSummary {
-        let open = requests.filter { $0.effectiveStatus(at: now) == .open }
-        return RequestsSummary(
-            activeCount: open.count,
-            answerCount: open.reduce(0) { $0 + $1.responseCount },   // add up all answers
-            medicineNames: open.map { $0.medicine.displayName },
-            updatedAt: now
-        )
+    /// Same numbers and names? (ignores updatedAt)
+    /// Used so we only refresh the widget when something really changed —
+    /// iOS limits how often a widget can be refreshed.
+    func hasSameContent(as other: RequestsSummary?) -> Bool {
+        guard let other else { return false }      // nothing saved before → it changed
+        return activeCount == other.activeCount
+            && answerCount == other.answerCount
+            && medicineNames == other.medicineNames
     }
 
     /// The sentence Siri says.

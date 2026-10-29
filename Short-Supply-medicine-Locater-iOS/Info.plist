@@ -2,15 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>   com.ad.MedicineLocator.refresh</string>
-	</array>
-	<key>Privary - Camera Usage Description</key>
-	<string>The Camera scans medicine names and barcodes on your device</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-	</array>
+    <!-- Background refresh id: must match the code exactly (no spaces) -->
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.ad.MedicineLocator.refresh</string>
+    </array>
+
+    <!-- Camera permission text (real key name, so iOS can find it) -->
+    <key>NSCameraUsageDescription</key>
+    <string>The camera scans medicine names and barcodes on your device. Photos are never uploaded.</string>
+
+    <!-- Background App Refresh -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+    </array>
+
+    <!-- Phase 14: lets the widget open links like medicinelocator://requests -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>com.ad.MedicineLocator</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>medicinelocator</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

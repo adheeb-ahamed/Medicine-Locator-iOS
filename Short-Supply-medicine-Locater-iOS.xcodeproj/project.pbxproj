@@ -7,11 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		235FF86A3093FAAF00BC9946 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 235FF8693093FAAF00BC9946 /* WidgetKit.framework */; };
+		235FF86C3093FAAF00BC9946 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 235FF86B3093FAAF00BC9946 /* SwiftUI.framework */; };
+		235FF8773093FAB100BC9946 /* MedicineLocatorWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 235FF8673093FAAF00BC9946 /* MedicineLocatorWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		23B6B9B43083973100455104 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 23B6B9B33083973100455104 /* FirebaseAuth */; };
 		23B6B9B63083973100455104 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 23B6B9B53083973100455104 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		235FF8753093FAB100BC9946 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2377CDB030837553006BB701 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235FF8663093FAAF00BC9946;
+			remoteInfo = MedicineLocatorWidgetExtension;
+		};
 		23B6BA203089785C00455104 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2377CDB030837553006BB701 /* Project object */;
@@ -21,12 +31,45 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		235FF87C3093FAB100BC9946 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				235FF8773093FAB100BC9946 /* MedicineLocatorWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		235FF8673093FAAF00BC9946 /* MedicineLocatorWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MedicineLocatorWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		235FF8693093FAAF00BC9946 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		235FF86B3093FAAF00BC9946 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		235FF87E3093FB8600BC9946 /* MedicineLocatorWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MedicineLocatorWidgetExtension.entitlements; sourceTree = "<group>"; };
 		2377CDB830837553006BB701 /* Short-Supply-medicine-Locater-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Short-Supply-medicine-Locater-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B6BA1C3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Short-Supply-medicine-Locater-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		235FF87B3093FAB100BC9946 /* Exceptions for "MedicineLocatorWidget" folder in "MedicineLocatorWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 235FF8663093FAAF00BC9946 /* MedicineLocatorWidgetExtension */;
+		};
+		235FF8843093FE0500BC9946 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "MedicineLocatorWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/RequestsSummary.swift,
+				Services/Local/RequestsSummaryStore.swift,
+			);
+			target = 235FF8663093FAAF00BC9946 /* MedicineLocatorWidgetExtension */;
+		};
 		23B6B9B830839B0300455104 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "Short-Supply-medicine-Locater-iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -37,10 +80,19 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		235FF86D3093FAAF00BC9946 /* MedicineLocatorWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				235FF87B3093FAB100BC9946 /* Exceptions for "MedicineLocatorWidget" folder in "MedicineLocatorWidgetExtension" target */,
+			);
+			path = MedicineLocatorWidget;
+			sourceTree = "<group>";
+		};
 		2377CDBA30837553006BB701 /* Short-Supply-medicine-Locater-iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				23B6B9B830839B0300455104 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "Short-Supply-medicine-Locater-iOS" target */,
+				235FF8843093FE0500BC9946 /* Exceptions for "Short-Supply-medicine-Locater-iOS" folder in "MedicineLocatorWidgetExtension" target */,
 			);
 			path = "Short-Supply-medicine-Locater-iOS";
 			sourceTree = "<group>";
@@ -53,6 +105,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		235FF8643093FAAF00BC9946 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				235FF86C3093FAAF00BC9946 /* SwiftUI.framework in Frameworks */,
+				235FF86A3093FAAF00BC9946 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2377CDB530837553006BB701 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,11 +133,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		235FF8683093FAAF00BC9946 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				235FF8693093FAAF00BC9946 /* WidgetKit.framework */,
+				235FF86B3093FAAF00BC9946 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2377CDAF30837553006BB701 = {
 			isa = PBXGroup;
 			children = (
+				235FF87E3093FB8600BC9946 /* MedicineLocatorWidgetExtension.entitlements */,
 				2377CDBA30837553006BB701 /* Short-Supply-medicine-Locater-iOS */,
 				23B6BA1D3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */,
+				235FF86D3093FAAF00BC9946 /* MedicineLocatorWidget */,
+				235FF8683093FAAF00BC9946 /* Frameworks */,
 				2377CDB930837553006BB701 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -86,6 +159,7 @@
 			children = (
 				2377CDB830837553006BB701 /* Short-Supply-medicine-Locater-iOS.app */,
 				23B6BA1C3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests.xctest */,
+				235FF8673093FAAF00BC9946 /* MedicineLocatorWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,6 +167,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		235FF8663093FAAF00BC9946 /* MedicineLocatorWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235FF8783093FAB100BC9946 /* Build configuration list for PBXNativeTarget "MedicineLocatorWidgetExtension" */;
+			buildPhases = (
+				235FF8633093FAAF00BC9946 /* Sources */,
+				235FF8643093FAAF00BC9946 /* Frameworks */,
+				235FF8653093FAAF00BC9946 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				235FF86D3093FAAF00BC9946 /* MedicineLocatorWidget */,
+			);
+			name = MedicineLocatorWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = MedicineLocatorWidgetExtension;
+			productReference = 235FF8673093FAAF00BC9946 /* MedicineLocatorWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2377CDC330837555006BB701 /* Build configuration list for PBXNativeTarget "Short-Supply-medicine-Locater-iOS" */;
@@ -100,10 +196,12 @@
 				2377CDB430837553006BB701 /* Sources */,
 				2377CDB530837553006BB701 /* Frameworks */,
 				2377CDB630837553006BB701 /* Resources */,
+				235FF87C3093FAB100BC9946 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				235FF8763093FAB100BC9946 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				2377CDBA30837553006BB701 /* Short-Supply-medicine-Locater-iOS */,
@@ -150,6 +248,9 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					235FF8663093FAAF00BC9946 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					2377CDB730837553006BB701 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -178,11 +279,19 @@
 			targets = (
 				2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */,
 				23B6BA1B3089785C00455104 /* Short-Supply-medicine-Locater-iOSTests */,
+				235FF8663093FAAF00BC9946 /* MedicineLocatorWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		235FF8653093FAAF00BC9946 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2377CDB630837553006BB701 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -200,6 +309,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		235FF8633093FAAF00BC9946 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2377CDB430837553006BB701 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -217,6 +333,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		235FF8763093FAB100BC9946 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235FF8663093FAAF00BC9946 /* MedicineLocatorWidgetExtension */;
+			targetProxy = 235FF8753093FAB100BC9946 /* PBXContainerItemProxy */;
+		};
 		23B6BA213089785C00455104 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2377CDB730837553006BB701 /* Short-Supply-medicine-Locater-iOS */;
@@ -225,6 +346,73 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		235FF8793093FAB100BC9946 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MedicineLocatorWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MedicineLocatorWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MedicineLocatorWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ad.MedicineLocator.MedicineLocatorWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		235FF87A3093FAB100BC9946 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = MedicineLocatorWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MedicineLocatorWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = MedicineLocatorWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ad.MedicineLocator.MedicineLocatorWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		2377CDC130837555006BB701 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -344,8 +532,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Short-Supply-medicine-Locater-iOS/Short-Supply-medicine-Locater-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -390,8 +580,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Short-Supply-medicine-Locater-iOS/Short-Supply-medicine-Locater-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -479,6 +671,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		235FF8783093FAB100BC9946 /* Build configuration list for PBXNativeTarget "MedicineLocatorWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235FF8793093FAB100BC9946 /* Debug */,
+				235FF87A3093FAB100BC9946 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2377CDB330837553006BB701 /* Build configuration list for PBXProject "Short-Supply-medicine-Locater-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

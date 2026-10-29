@@ -44,6 +44,12 @@ struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR struct name
                 .task { await appViewModel.start() }
                 .preferredColorScheme(appearance.colorScheme)
                 .dynamicTypeSize(textSize.range)   // in-app text size (System = follow iPhone)
+                // Widget taps open links like medicinelocator://requests
+                .onOpenURL { url in
+                    if let section = DeepLink.section(for: url) {
+                        IntentRouter.shared.open(section)   // same path Siri uses
+                    }
+                }
                 
         }
         .onChange(of: scenePhase) { _, newPhase in

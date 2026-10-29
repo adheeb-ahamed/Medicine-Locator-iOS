@@ -56,6 +56,7 @@ struct RespondView: View {
 
                 Text("Which licensed pharmacy has it?")
                     .font(.sectionTitle)
+                    .accessibilityAddTraits(.isHeader)
 
                 ForEach(viewModel.options) { option in
                     Button {

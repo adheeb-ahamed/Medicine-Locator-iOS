@@ -129,6 +129,7 @@ struct ScanView: View {
 
         case .found(let suggestion):
             Text("Is it one of these?").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
 
             ForEach(suggestion.names, id: \.self) { name in
                 Button {

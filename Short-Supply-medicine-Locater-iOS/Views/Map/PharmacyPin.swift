@@ -11,7 +11,13 @@ struct PharmacyPin: View {
     let pharmacy: Pharmacy
     let isSelected: Bool
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion  // iPhone setting
+    @AppStorage(AccessibilitySettings.reduceMotionKey) private var appReduceMotion = false  // our toggle
+
+    /// True if either setting is on.
+    private var reduceMotion: Bool {
+        AccessibilitySettings.shouldReduceMotion(system: systemReduceMotion, app: appReduceMotion)
+    }
     @State private var pulse = false
 
     private var color: Color { pharmacy.isVerified ? Theme.success : Theme.accent }
@@ -44,5 +50,12 @@ struct PharmacyPin: View {
                 .shadow(color: .black.opacity(0.2), radius: 4, y: 2)
         }
         .animation(.spring(duration: 0.3), value: isSelected)
+        // Read the pin as one item: "City Pharmacy, verified pharmacy"
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AccessibilityText.pin(name: pharmacy.name,
+                                                  isHospital: pharmacy.kind == .hospital,
+                                                  isVerified: pharmacy.isVerified))
+        // Tells VoiceOver it can be tapped, and whether it's the chosen one
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }

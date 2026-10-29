@@ -28,7 +28,13 @@ struct ConfettiView: View {
         Piece(x: 0.86, y: 0.66, color: .white,            angle: -65)
     ]
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion  // iPhone setting
+    @AppStorage(AccessibilitySettings.reduceMotionKey) private var appReduceMotion = false  // our toggle
+
+    /// True if either setting is on.
+    private var reduceMotion: Bool {
+        AccessibilitySettings.shouldReduceMotion(system: systemReduceMotion, app: appReduceMotion)
+    }
     @State private var dropped = false
 
     var body: some View {

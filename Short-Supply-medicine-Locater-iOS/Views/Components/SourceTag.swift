@@ -26,7 +26,7 @@ struct SourceTag: View {
         return response.wasOnSite ? .onSite : .remote
     }
 
-    private var text: String {
+    var text: String {
         switch kind {
         case .pharmacy: "From the pharmacy"
         case .onSite:   "Seen on-site"

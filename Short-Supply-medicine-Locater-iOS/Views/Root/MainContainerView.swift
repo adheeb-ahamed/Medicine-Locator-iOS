@@ -16,6 +16,7 @@ struct MainContainerView: View {
 
     /// Remembered by iOS — reopening the app returns to the same section.
     @SceneStorage("selectedSection") private var selection: AppSection = .home
+    private let router = IntentRouter.shared   // Siri asks to open a section
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,6 +32,15 @@ struct MainContainerView: View {
             }
         }
         .animation(.default, value: services.connectivity.isOnline)
+        // initial: true → also runs when this view first appears.
+        // That matters when Siri launched the app, or the app was locked with Face ID:
+        // the request waits in the router until this screen exists.
+        .onChange(of: router.pendingSection, initial: true) { _, section in
+            if let section {
+                selection = section           // switch tab (iPhone) / sidebar (iPad)
+                router.pendingSection = nil   // done — don't do it again
+            }
+        }
         .task {
             // Phase 7: check for new answers every 60 s while the app is open
             while !Task.isCancelled {

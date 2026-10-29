@@ -43,6 +43,7 @@ final class AccountViewModel {
             try await authService.deleteAccount()              // 2. Firebase sign-in
             searchHistory.clearAll()                           // 3. Local data
             sourceCache.clearAll()
+            RequestsSummaryStore().clear()                     // Siri summary
             return true
         } catch {
             errorMessage = error.localizedDescription

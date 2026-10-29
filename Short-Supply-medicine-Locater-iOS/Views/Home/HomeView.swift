@@ -25,6 +25,7 @@ struct HomeView: View {
     @State private var showingScanner = false
     @State private var scannedSearch: SearchViewModel?
     @State private var showingScannedSearch = false
+    private let router = IntentRouter.shared   // Siri asks to search
 
     init(viewModel: HomeViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -64,6 +65,17 @@ struct HomeView: View {
         .toolbar(.hidden, for: .navigationBar)      // the hero replaces the big title
         .task { await viewModel.load() }
         .refreshable { await viewModel.load() }
+        // Siri "Find a medicine": run the search exactly like typing it,
+        // then reuse the same push the scanner already uses.
+        .onChange(of: router.pendingSearch, initial: true) { _, medicine in
+            guard let medicine else { return }
+            router.pendingSearch = nil
+            let search = services.makeSearchViewModel()
+            search.query = medicine
+            search.submit()                 // saves to history + loads ranked sources
+            scannedSearch = search
+            showingScannedSearch = true     // pushes SearchView with the results
+        }
         .sheet(isPresented: $showingScanner, onDismiss: openScannedSearch) {
             NavigationStack {
                 ScanView(viewModel: services.makeScanViewModel()) { name, _ in
@@ -161,6 +173,7 @@ struct HomeView: View {
         if !viewModel.myActiveRequests.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
                 Text("You're looking for").font(.sectionTitle)
+                    .accessibilityAddTraits(.isHeader)
 
                 ForEach(viewModel.myActiveRequests.prefix(2)) { request in
                     NavigationLink {
@@ -182,6 +195,7 @@ struct HomeView: View {
     private var nearbySection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Pharmacies near you").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
             VStack(alignment: .leading, spacing: 0) {
                 nearbyContent
             }

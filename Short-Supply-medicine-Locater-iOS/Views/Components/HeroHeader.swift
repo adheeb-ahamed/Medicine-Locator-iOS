@@ -23,6 +23,7 @@ struct HeroHeader<Content: View>: View {
             Text(title)
                 .font(.screenTitle)
                 .foregroundStyle(.white)
+                .accessibilityAddTraits(.isHeader)
             if let subtitle {
                 Text(subtitle)
                     .font(.subheadline)

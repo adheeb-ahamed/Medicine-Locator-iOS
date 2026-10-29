@@ -21,7 +21,7 @@ struct RequestRow: View {
         let status = request.effectiveStatus()
         let isOpen = status == .open
 
-        HStack(spacing: 14) {
+        AdaptiveStack(spacing: 14) {
             IconTile(systemImage: "pills.fill",
                      color: isOpen ? Theme.accent : Theme.tertiary,
                      tint: isOpen ? Theme.accentTint : Theme.ringTrack)
@@ -48,6 +48,12 @@ struct RequestRow: View {
         }
         .cardStyle()
         .opacity(isOpen ? 1 : 0.85)          // past requests look quieter
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AccessibilityText.request(
+            medicine: request.medicine.displayName,
+            area: request.areaName,
+            status: status.label,
+            answers: request.responseCount))
+        .accessibilityHint("Opens this request")
     }
 }

@@ -105,6 +105,7 @@ struct MyRequestsView: View {
     private func sectionHeader(_ title: String) -> some View {
         Text(title)
             .font(.sectionTitle)
+            .accessibilityAddTraits(.isHeader)
             .foregroundStyle(.primary)
             .textCase(nil)
     }

@@ -55,6 +55,7 @@ struct PharmacyDashboardView: View {
     private var postCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("Post availability").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
 
             TextField("Medicine name", text: $viewModel.medicineName)
                 .textInputAutocapitalization(.words)
@@ -128,6 +129,7 @@ struct PharmacyDashboardView: View {
     private var livePosts: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Live posts").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
 
             if viewModel.livePosts.isEmpty {
                 Text("No live posts.")

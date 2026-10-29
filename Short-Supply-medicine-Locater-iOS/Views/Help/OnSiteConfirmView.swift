@@ -36,6 +36,15 @@ struct OnSiteConfirmView: View {
         }
         .cardStyle()
         .task { await viewModel.check() }
+        // After a vote the card changes, but VoiceOver focus stays put,
+        // so a blind user wouldn't know it worked. Announce it out loud.
+        .onChange(of: viewModel.state) { _, newState in
+            if case .done(let verdict) = newState {
+                AccessibilityNotification.Announcement(
+                    AccessibilityText.voteRecorded(verdict.label)
+                ).post()
+            }
+        }
     }
 
     @ViewBuilder
@@ -71,6 +80,8 @@ struct OnSiteConfirmView: View {
                     answerCard(verdict)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(verdict.label)                 // "Sold out now"
+                .accessibilityHint(consequence(for: verdict))      // "Two sold-out votes close it…"
             }
 
         case .done(let verdict):
@@ -119,6 +130,7 @@ struct OnSiteConfirmView: View {
             Image(systemName: "chevron.right")
                 .font(.caption.weight(.bold))
                 .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
         }
         .padding(12)
         .background(Theme.background, in: RoundedRectangle(cornerRadius: 18, style: .continuous))

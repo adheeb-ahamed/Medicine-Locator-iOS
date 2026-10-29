@@ -26,6 +26,8 @@ struct DirectionsCard: View {
                     Text(viewModel.pharmacy.address)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .frame(width: 44, height: 44)   // tap area 44×44 (Apple minimum)
+                        .contentShape(Rectangle())  
                 }
                 Spacer()
                 if let onClose {

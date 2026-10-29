@@ -12,13 +12,25 @@ struct ConfidenceRing: View {
     var size: CGFloat = 52
     var showsLevel = false       // show HIGH / MED / LOW under the number
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion  // iPhone setting
+    @AppStorage(AccessibilitySettings.reduceMotionKey) private var appReduceMotion = false  // our toggle
+
+    /// True if either setting is on.
+    private var reduceMotion: Bool {
+        AccessibilitySettings.shouldReduceMotion(system: systemReduceMotion, app: appReduceMotion)
+    }
+    /// Becomes bigger than 1 when the user picks bigger text.
+    @ScaledMetric(relativeTo: .body) private var textScale: CGFloat = 1
+
+    /// Size actually drawn: base size × text scale, capped at 1.5× so it never gets huge.
+    private var drawnSize: CGFloat { size * min(textScale, 1.5) }
+    
     @State private var progress = 0.0   // what is drawn right now (animates up to score)
 
     private var level: ConfidenceLevel { ConfidenceLevel(score: score) }
     private var clamped: Double { min(max(score, 0), 1) }
     private var percent: Int { Int((clamped * 100).rounded()) }
-    private var lineWidth: CGFloat { size * 0.12 }
+    private var lineWidth: CGFloat { drawnSize * 0.12 }
 
     var body: some View {
         ZStack {
@@ -35,21 +47,21 @@ struct ConfidenceRing: View {
             // 3. Number (+ optional level) in the middle
             VStack(spacing: 0) {
                 Text("\(percent)")
-                    .font(.system(size: size * 0.32, weight: .black, design: .rounded))
+                    .font(.system(size: drawnSize * 0.32, weight: .black, design: .rounded))
                     .foregroundStyle(.primary)
                 if showsLevel {
                     Text(level.shortLabel)
-                        .font(.system(size: size * 0.14, weight: .heavy, design: .rounded))
+                        .font(.system(size: drawnSize * 0.14, weight: .heavy, design: .rounded))
                         .foregroundStyle(level.color)
                 }
             }
         }
-        .frame(width: size, height: size)
+        .frame(width: drawnSize, height: drawnSize)
         .onAppear { fill() }
         .onChange(of: score) { fill() }
         // VoiceOver reads one sentence instead of "circle, circle, 82"
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(level.label) confidence, \(percent) out of 100")
+        .accessibilityLabel(AccessibilityText.confidence(score: score))   // same sentence everywhere
     }
 
     /// Fill the ring with a short animation, unless the user turned on Reduce Motion.

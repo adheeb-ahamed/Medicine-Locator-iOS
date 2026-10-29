@@ -35,15 +35,19 @@ final class HomeViewModel {
     private let locationService: LocationServicing
     private let requestService: RequestServicing     // NEW
     private let authService: AuthServicing           // NEW
+    private let summaryStore: RequestsSummaryStore
 
     init(pharmacyService: PharmacyServicing,
          locationService: LocationServicing,
          requestService: RequestServicing,
-         authService: AuthServicing) {
+         authService: AuthServicing,
+         summaryStore: RequestsSummaryStore = RequestsSummaryStore() ){
         self.pharmacyService = pharmacyService
         self.locationService = locationService
         self.requestService = requestService
         self.authService = authService
+        self.summaryStore = summaryStore
+        
     }
 
     /// The dashboard only shows the closest 5.
@@ -100,6 +104,7 @@ final class HomeViewModel {
         do {
             myActiveRequests = try await requestService.requests(ownedBy: userID)
                 .filter { $0.isActive() }
+            summaryStore.save(.make(from: myActiveRequests))
         } catch {
             myActiveRequests = []   // Home still works offline; My Requests tab shows the error
         }

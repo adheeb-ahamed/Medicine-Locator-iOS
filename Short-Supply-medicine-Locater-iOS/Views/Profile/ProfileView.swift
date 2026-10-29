@@ -111,6 +111,7 @@ struct ProfileView: View {
     private var reputationCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Recent reputation").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 12) {
                 if viewModel.recent.isEmpty {
@@ -200,6 +201,7 @@ struct ProfileView: View {
                                          @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title).font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
             VStack(spacing: 4) {
                 content()
             }

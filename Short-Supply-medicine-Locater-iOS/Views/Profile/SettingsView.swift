@@ -14,6 +14,9 @@ struct SettingsView: View {
     @State private var viewModel: SettingsViewModel
     @State private var confirmClear = false
     @AppStorage(AppearanceMode.storageKey) private var appearance: AppearanceMode = .system
+    @AppStorage(TextSizeMode.storageKey) private var textSize: TextSizeMode = .system
+    @AppStorage(AccessibilitySettings.reduceMotionKey) private var reduceMotion = false
+    @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverOn   // read-only: is VoiceOver running?
 
     init(viewModel: SettingsViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -30,6 +33,26 @@ struct SettingsView: View {
             } footer: {
                 Text("System follows your iPhone's Light/Dark setting.")
             }
+            
+            Section {
+                // Text size (from TextSizeMode)
+                Picker("Text size", selection: $textSize) {
+                    ForEach(TextSizeMode.allCases) { mode in
+                        Text(mode.title).tag(mode)
+                    }
+                }
+
+                // Our own switch — adds to the iPhone's Reduce Motion
+                Toggle("Reduce motion", isOn: $reduceMotion)
+
+                // VoiceOver can't be switched on by an app, so we only show its status
+                LabeledContent("VoiceOver", value: voiceOverOn ? "On" : "Off")
+            } header: {
+                Text("Accessibility")
+            } footer: {
+                Text("Reduce motion stops ring, pin and confetti animations. VoiceOver is turned on by iOS: Settings → Accessibility → VoiceOver, or triple-click the side button.")
+            }
+            
             Section {
                 Toggle("Lock with Face ID", isOn: $app.isAppLockEnabled)
                     .disabled(!app.isBiometricAvailable)

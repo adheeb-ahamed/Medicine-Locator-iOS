@@ -56,6 +56,7 @@ struct SourcesListView: View {
         } header: {
             Text("Where people have seen it")
                 .font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
                 .foregroundStyle(.primary)
                 .textCase(nil)
         } footer: {

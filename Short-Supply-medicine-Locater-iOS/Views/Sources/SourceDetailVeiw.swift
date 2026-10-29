@@ -91,7 +91,7 @@ struct SourceDetailView: View {
 
     /// Big ring + how long the report stays visible.
     private var trustCard: some View {
-        HStack(spacing: 18) {
+        AdaptiveStack(spacing: 18) {
             ConfidenceRing(score: source.score, size: 96, showsLevel: true)
 
             VStack(alignment: .leading, spacing: 6) {
@@ -112,7 +112,7 @@ struct SourceDetailView: View {
 
     /// The three on-site vote counts.
     private var checksRow: some View {
-        HStack(spacing: 10) {
+        AdaptiveStack(spacing: 10) {
             StatTile(value: "\(response.stillAvailableCount)", label: "still available",
                      systemImage: "checkmark.circle.fill", style: .card)
             StatTile(value: "\(response.soldOutCount)", label: "sold out now",
@@ -125,7 +125,7 @@ struct SourceDetailView: View {
     @ViewBuilder
     private var actionButtons: some View {
         if let pharmacy {
-            HStack(spacing: 12) {
+            AdaptiveStack(spacing: 12) {
                 if let phone = pharmacy.phone,
                    let url = URL(string: "tel:\(phone.filter { $0.isNumber || $0 == "+" })") {
                     Link(destination: url) {
@@ -147,6 +147,7 @@ struct SourceDetailView: View {
     private var history: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("History").font(.sectionTitle)
+                .accessibilityAddTraits(.isHeader)
 
             timelineRow(icon: response.source == .verifiedPharmacy ? "checkmark.seal.fill" : "person.fill",
                         color: Theme.accent,

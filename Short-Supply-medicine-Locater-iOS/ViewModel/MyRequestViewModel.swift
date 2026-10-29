@@ -21,13 +21,16 @@ final class MyRequestsViewModel {
     private let requestService: RequestServicing
     private let authService: AuthServicing
     private let notificationService: NotificationServicing?
+    private let summaryStore: RequestsSummaryStore   // Siri + widget summary
 
     init(requestService: RequestServicing,
-             authService: AuthServicing,
-             notificationService: NotificationServicing? = nil) {
-            self.requestService = requestService
-            self.authService = authService
-            self.notificationService = notificationService
+         authService: AuthServicing,
+         notificationService: NotificationServicing? = nil,
+         summaryStore: RequestsSummaryStore = RequestsSummaryStore()) {
+        self.requestService = requestService
+        self.authService = authService
+        self.notificationService = notificationService
+        self.summaryStore = summaryStore
     }
 
     var active: [MedicineRequest] { requests.filter { $0.effectiveStatus() == .open } }
@@ -41,6 +44,7 @@ final class MyRequestsViewModel {
         defer { isLoading = false }
         do {
             requests = try await requestService.requests(ownedBy: ownerID)
+            summaryStore.save(.make(from: requests))   // keep Siri's summary up to date
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription

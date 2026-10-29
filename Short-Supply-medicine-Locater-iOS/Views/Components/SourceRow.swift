@@ -19,7 +19,8 @@ struct SourceRow: View {
     var body: some View {
         let response = source.response
 
-        HStack(spacing: 14) {
+        // Side by side normally; stacked at very large text sizes.
+        AdaptiveStack(spacing: 14) {
             ConfidenceRing(score: source.score, size: 56, showsLevel: true)
 
             VStack(alignment: .leading, spacing: 6) {
@@ -41,9 +42,17 @@ struct SourceRow: View {
                 Image(systemName: "chevron.right")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.tertiary)
+                    .accessibilityHidden(true)      // decoration — don't read "forward"
             }
         }
         .cardStyle()
-        .accessibilityElement(children: .combine)
+        // .ignore = skip the small pieces, read OUR one clear sentence instead
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(AccessibilityText.source(
+            pharmacy: response.pharmacyName,
+            tag: SourceTag(response: response).text,
+            score: source.score,
+            expiresAt: response.expiresAt))
+        .accessibilityHint("Opens the report details")   // says what a double-tap does
     }
 }

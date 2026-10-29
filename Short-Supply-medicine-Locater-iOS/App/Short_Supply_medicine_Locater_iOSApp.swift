@@ -16,6 +16,7 @@ struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR struct name
     @State private var services: ServiceContainer
     @State private var appViewModel: AppViewModel
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage(AppearanceMode.storageKey) private var appearance: AppearanceMode = .system
 
     init() {
         FirebaseApp.configure()
@@ -40,6 +41,7 @@ struct Short_Supply_medicine_Locater_iOSApp: App {   // keep YOUR struct name
                 .environment(\.managedObjectContext,
                              persistenceController.container.viewContext)
                 .task { await appViewModel.start() }
+                .preferredColorScheme(appearance.colorScheme)
                 
         }
         .onChange(of: scenePhase) { _, newPhase in

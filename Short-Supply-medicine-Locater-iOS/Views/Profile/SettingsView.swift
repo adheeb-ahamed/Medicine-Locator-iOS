@@ -13,6 +13,7 @@ struct SettingsView: View {
     @Environment(ServiceContainer.self) private var services
     @State private var viewModel: SettingsViewModel
     @State private var confirmClear = false
+    @AppStorage(AppearanceMode.storageKey) private var appearance: AppearanceMode = .system
 
     init(viewModel: SettingsViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -22,6 +23,13 @@ struct SettingsView: View {
         @Bindable var app = app
 
         List {
+            Section {
+                AppearancePicker(selection: $appearance)
+            } header: {
+                Text("Appearance")
+            } footer: {
+                Text("System follows your iPhone's Light/Dark setting.")
+            }
             Section {
                 Toggle("Lock with Face ID", isOn: $app.isAppLockEnabled)
                     .disabled(!app.isBiometricAvailable)

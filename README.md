@@ -3,7 +3,9 @@
 An iPhone and iPad app that helps people in Sri Lanka find medicines in short supply, using availability reports from the community and verified pharmacies. Every answer gets a confidence score, and answers expire automatically so stale information disappears.
 
 <!-- Screenshot: hero image — Home screen on iPhone next to the iPad sidebar layout -->
-![Medicine Locator on iPhone and iPad](docs/screenshots/hero.png)
+<p align="center">
+  <img src="docs/screenshots/hero.png" alt="Medicine Locator on iPhone and iPad" width="300">
+</p>
 
 ## Features
 
@@ -46,15 +48,6 @@ An iPhone and iPad app that helps people in Sri Lanka find medicines in short su
 
 To test location features in the simulator, use **Features → Location → Custom Location** near Colombo (e.g. 6.911, 79.850).
 
-## Test accounts
-
-| Role | Email | Password |
-| --- | --- | --- |
-| Member | [add] | [add] |
-| Verified pharmacy | [add] | [add] |
-| Moderator | [add] | [add] |
-
-You can also continue anonymously from the welcome screen.
 
 ## Running tests
 

@@ -4,7 +4,7 @@ An iPhone and iPad app that helps people in Sri Lanka find medicines in short su
 
 <!-- Screenshot: hero image — Home screen on iPhone next to the iPad sidebar layout -->
 <p align="center">
-  <img src="docs/screenshots/hero.png" alt="Medicine Locator on iPhone and iPad" width="300">
+  <img src="docs/screenshots/hero.png" alt="Medicine Locator on iPhone and iPad" width="250">
 </p>
 
 ## Features
